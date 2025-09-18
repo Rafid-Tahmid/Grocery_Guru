@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Profile - GroceryGuru</title>
+    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="edit_profile.css">
+    <link rel="icon" type="image/x-icon" href="dinner.ico">
+    <script src="https://kit.fontawesome.com/2df6b0f25d.js" crossorigin="anonymous"></script>
+    <script src="edit_profile.js" defer></script>
+</head>
+
+<body>
+    <div class="background-image"></div>
+    <div class="frosted-overlay"></div>
+
+    <header class="header">
+        <div class="header-content">
+            <a href="index.html" class="logo">GroceryGuru</a>
+
+            <nav class="navbar">
+                <a href="index.html">Home</a>
+                <a href="recipe_catalogue.html">Recipes</a>
+                <a href="about_us.html">About</a>
+                <a href="credits.html">Credits</a>
+            </nav>
+
+            <div class="searchAndProfile">
+                <button type="button" id="openSearchModal" class="search-icon-btn" aria-label="Open search modal"
+                    title="Search for recipes" aria-expanded="false" aria-controls="searchModal">
+                    <i class="fa fa-search" aria-hidden="true"></i>
+                </button>
+                <div class="profile-container">
+                    <i class="fa-regular fa-user"></i>
+                    <div class="profileIconWindow" id="profileMenu" role="menu" aria-label="Profile menu"
+                        aria-hidden="true">
+                        <div class="profileCard">
+                            <div class="profileCard-avatar" role="presentation">
+                                <i class="fa-regular fa-user"></i>
+                            </div>
+                            <div class="profileCard-name" role="status">Welcome, User</div>
+                            <a class="profileCard-bubble login-btn" href="log_in.html" role="menuitem"
+                                title="Sign in to your account">Log in</a>
+                            <a class="profileCard-bubble signout-btn" href="#" role="menuitem" style="display:none;"
+                                title="Sign out of your account">Sign out</a>
+                            <a class="profileCard-bubble" href="saved_recipes.html" role="menuitem"
+                                style="display:none;" title="View your saved recipes">Saved Recipes</a>
+                            <a class="profileCard-bubble" href="meal_planner.html" role="menuitem" style="display:none;"
+                                title="Plan your meals for the week">My Meal Plan</a>
+                            <a class="profileCard-bubble active" href="edit_profile.html" role="menuitem"
+                                title="Edit your profile">Edit Profile</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="edit-profile-main">
+        <div class="edit-profile-container">
+            <h1>Edit Profile</h1>
+            <form id="editProfileForm" class="edit-profile-form">
+                <div class="form-section">
+                    <h2>Personal Information</h2>
+                    <div class="field-row">
+                        <input type="text" id="firstName" name="firstName" placeholder="First Name" required>
+                        <input type="text" id="lastName" name="lastName" placeholder="Last Name" required>
+                    </div>
+                    <input type="email" id="email" name="email" placeholder="Email Address" required>
+                    <input type="tel" id="phoneNumber" name="phoneNumber" placeholder="Phone Number" required>
+                    <div class="field-row">
+                        <div class="select-wrapper">
+                            <select id="state" name="state" required>
+                                <option value="" disabled selected hidden>State or Territory</option>
+                                <option value="ACT">Australian Capital Territory</option>
+                                <option value="NSW">New South Wales</option>
+                                <option value="NT">Northern Territory</option>
+                                <option value="QLD">Queensland</option>
+                                <option value="SA">South Australia</option>
+                                <option value="TAS">Tasmania</option>
+                                <option value="VIC">Victoria</option>
+                                <option value="WA">Western Australia</option>
+                            </select>
+                            <i class="fa-solid fa-angle-down dropdown-icon"></i>
+                        </div>
+                        <input type="number" id="postcode" name="postcode" placeholder="Postcode" required>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h2>Account Settings</h2>
+                    <div class="password-container">
+                        <input type="password" id="currentPassword" name="currentPassword"
+                            placeholder="Current Password" required>
+                        <i class="fa-solid fa-eye toggle-password"></i>
+                    </div>
+                    <div class="password-container">
+                        <input type="password" id="newPassword" name="newPassword" placeholder="New Password">
+                        <i class="fa-solid fa-eye toggle-password"></i>
+                    </div>
+                    <div class="password-container">
+                        <input type="password" id="confirmPassword" name="confirmPassword"
+                            placeholder="Confirm New Password">
+                        <i class="fa-solid fa-eye toggle-password"></i>
+                    </div>
+                    <p class="password-hint">Leave password fields blank if you don't want to change your password</p>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="action-btn secondary"
+                        onclick="window.location.href='index.html'">Cancel</button> <button type="submit"
+                        class="action-btn primary">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <!-- Company Info -->
+            <div class="footer-section">
+                <img alt="GroceryGuru logo" src="grocery.png" class="footer-logo">
+                <p class="footer-description">The place where your favourite mouth-watering meals are made with
+                    mouth-watering prices. Discover recipes, save money, and eat better.</p>
+                <div class="social-links">
+                    <a href="https://www.linkedin.com/in/kenji-baritua/" target="_blank" aria-label="Kenji's LinkedIn">
+                        <i class="fa-brands fa-linkedin-in"></i>
+                    </a>
+                    <a href="https://www.linkedin.com/in/rafid-tahmid/" target="_blank" aria-label="Rafid's LinkedIn">
+                        <i class="fa-brands fa-linkedin-in"></i>
+                    </a>
+                    <a href="https://www.linkedin.com/in/andrwong/" target="_blank" aria-label="Andrew's LinkedIn">
+                        <i class="fa-brands fa-linkedin-in"></i>
+                    </a>
+                    <a href="https://www.linkedin.com/in/willjjohnston/" target="_blank" aria-label="Will's LinkedIn">
+                        <i class="fa-brands fa-linkedin-in"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Quick Links -->
+            <div class="footer-section">
+                <h3 class="footer-heading">Quick Links</h3>
+                <ul class="footer-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="recipe_catalogue.html">Recipes</a></li>
+                    <li><a href="about_us.html">About</a></li>
+                    <li><a href="credits.html">Credits</a></li>
+                </ul>
+            </div>
+
+            <!-- Contact Info -->
+            <div class="footer-section">
+                <h3 class="footer-heading">Contact</h3>
+                <div class="footer-contact">
+                    <div class="contact-item">
+                        <i class="fa fa-map-marker"></i>
+                        <span>University of Adelaide<br>North Terrace, Adelaide SA 5000<br>Australia</span>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fa fa-envelope"></i>
+                        <span>hire-us@ineedajob.com</span>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fa fa-phone"></i>
+                        <span>08 8123 4567</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Testimonials -->
+            <div class="footer-section">
+                <h3 class="footer-heading">What Our Users Say</h3>
+                <div class="testimonials-horizontal">
+                    <div class="testimonial-item">
+                        <p>"GroceryGuru saved me so much time and money—it's a game-changer!"</p>
+                        <small>- Mercy</small>
+                    </div>
+                    <div class="testimonial-item">
+                        <p>"I stopped wasting time in grocery lines. Now I shop and cook smarter."</p>
+                        <small>- Prachi</small>
+                    </div>
+                    <div class="testimonial-item">
+                        <p>"Finding the best prices between stores has saved me so much money!"</p>
+                        <small>- Hannah</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Copyright -->
+        <div class="footer-copyright">
+            <div class="copyright-content">
+                <p>© 2025 KRAW. All Rights Reserved | Designed by Kenji Baritua, Rafid Tahmid, Andrew Wong, William
+                    Johnston</p>
+                <div class="footer-controls">
+                    <button type="button" id="darkModeToggle" class="theme-toggle" aria-label="Toggle dark mode">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    <button type="button" class="back-to-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})"
+                        aria-label="Back to top">
+                        <i class="fa fa-arrow-up"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+
+</html>

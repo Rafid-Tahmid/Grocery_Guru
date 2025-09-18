@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Admin Panel - GroceryGuru</title>
+    <link rel="preload" href="login_style.css" as="style" />
+    <link rel="stylesheet" href="login_style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="icon" type="image/x-icon" href="dinner.ico">
+    <script src="log_in.js" defer></script>
+    <script src="admin_panel.js" defer></script>
+    <script src="https://kit.fontawesome.com/2df6b0f25d.js" crossorigin="anonymous" defer></script>
+</head>
+
+<body class="login-page">
+    <div class="background-image"></div>
+    <div class="frosted-overlay"></div>
+    <section class="loginHeader">
+        <a href="log_in.html">Back</a>
+        <a href="index.html" class="logo">GroceryGuru</a>
+        <div class="header-controls">
+            <button type="button" id="darkModeToggle" class="theme-toggle" aria-label="Toggle dark mode">
+                <i class="fas fa-moon"></i>
+            </button>
+        </div>
+    </section>
+
+    <div class="sidenav">
+        <h2>Filter Users</h2>
+        <div class="filter-section">
+            <div class="search-box">
+                <input type="text" id="userSearchInput" placeholder="Search users...">
+                <button id="userSearchBtn" type="button" aria-label="Search">
+                    <i class="fa fa-search" aria-hidden="true"></i>
+                </button>
+            </div>
+
+            <h3>Filter By</h3>
+            <div class="filter-group">
+                <label>State and Territories</label>
+                <div class="state-checkboxes">
+                    <div class="state-checkbox">
+                        <input type="checkbox" id="stateACT" name="stateFilter" value="ACT">
+                        <label for="stateACT">Australian Capital Territory</label>
+                    </div>
+                    <div class="state-checkbox">
+                        <input type="checkbox" id="stateNSW" name="stateFilter" value="NSW">
+                        <label for="stateNSW">New South Wales</label>
+                    </div>
+                    <div class="state-checkbox">
+                        <input type="checkbox" id="stateNT" name="stateFilter" value="NT">
+                        <label for="stateNT">Northern Territory</label>
+                    </div>
+                    <div class="state-checkbox">
+                        <input type="checkbox" id="stateQLD" name="stateFilter" value="QLD">
+                        <label for="stateQLD">Queensland</label>
+                    </div>
+                    <div class="state-checkbox">
+                        <input type="checkbox" id="stateSA" name="stateFilter" value="SA">
+                        <label for="stateSA">South Australia</label>
+                    </div>
+                    <div class="state-checkbox">
+                        <input type="checkbox" id="stateTAS" name="stateFilter" value="TAS">
+                        <label for="stateTAS">Tasmania</label>
+                    </div>
+                    <div class="state-checkbox">
+                        <input type="checkbox" id="stateVIC" name="stateFilter" value="VIC">
+                        <label for="stateVIC">Victoria</label>
+                    </div>
+                    <div class="state-checkbox">
+                        <input type="checkbox" id="stateWA" name="stateFilter" value="WA">
+                        <label for="stateWA">Western Australia</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="filter-actions">
+                <button id="applyFiltersBtn" type="button" class="filter-btn">Apply Filters</button>
+                <button id="clearFiltersBtn" type="button" class="filter-btn secondary">Clear</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="admin-content">
+        <div id="userTable" class="admin-table-wrapper">
+            <div class="admin-table-header">
+                <h2>All Users</h2>
+                <div class="table-action-buttons">
+                    <button id="addUserBtn" type="button" class="admin-action-btn save-btn">Add User</button>
+                    <button id="editUserBtn" type="button" class="admin-action-btn save-btn">Edit User</button>
+                    <button id="deleteUserBtn" type="button" class="admin-action-btn cancel-btn">Delete User</button>
+                </div>
+            </div>
+            <table class="admin-user-table">
+                <thead>
+                    <tr>
+                        <th><input type="checkbox" id="selectAll"></th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Email</th>
+                        <th>Username</th>
+                        <th>Password</th>
+                        <th>Phone</th>
+                        <th>State</th>
+                        <th>Postcode</th>
+                        <th>Admin</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Example user row -->
+                    <tr>
+                        <td><input type="checkbox" class="user-checkbox"></td>
+                        <td>Andrew</td>
+                        <td>Wong</td>
+                        <td>awong@example.com</td>
+                        <td>andrwong</td>
+                        <td>••••••</td>
+                        <td>0400000000</td>
+                        <td>SA</td>
+                        <td>5000</td>
+                        <td><span class="admin-badge">No</span></td>
+                    </tr>
+                </tbody>
+            </table>
+            <div id="noResultsFound" class="no-results" style="display: none;">
+                <p>No users found matching your search criteria. Try adjusting your filters or search terms.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add User Modal -->
+    <div id="addUserModal" class="admin-modal">
+        <div class="admin-modal-content">
+            <div class="admin-modal-header">
+                <h2>Add New User</h2>
+                <span class="admin-modal-close">&times;</span>
+            </div>
+            <div class="admin-modal-body">
+                <form id="addUserForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="firstName">First Name</label>
+                            <input type="text" id="firstName" name="firstName" placeholder="First Name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="lastName">Last Name</label>
+                            <input type="text" id="lastName" name="lastName" placeholder="Last Name" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" placeholder="Email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="username">Username</label>
+                        <input type="text" id="username" name="username" placeholder="Username" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" name="password" placeholder="Password" required>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="phone">Phone</label>
+                            <input type="tel" id="phone" name="phone" placeholder="Phone">
+                        </div>
+                        <div class="form-group">
+                            <label for="state">State</label>
+                            <div class="select-wrapper">
+                                <select id="state" name="state" required>
+                                    <option value="" disabled selected hidden>State or Territory</option>
+                                    <option value="ACT">Australian Capital Territory</option>
+                                    <option value="NSW">New South Wales</option>
+                                    <option value="NT">Northern Territory</option>
+                                    <option value="QLD">Queensland</option>
+                                    <option value="SA">South Australia</option>
+                                    <option value="TAS">Tasmania</option>
+                                    <option value="VIC">Victoria</option>
+                                    <option value="WA">Western Australia</option>
+                                </select>
+                                <i class="fa-solid fa-angle-down dropdown-icon"></i>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="postcode">Postcode</label>
+                            <input type="text" id="postcode" name="postcode" placeholder="Postcode">
+                        </div>
+                    </div>
+                    <div class="form-group admin-checkbox-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="isAdmin" name="isAdmin">
+                            <span class="checkmark"></span>
+                            Grant Admin Privileges
+                        </label>
+                        <small class="form-text">Admin users can access the admin panel and manage other users</small>
+                    </div>
+                    <div class="admin-modal-footer">
+                        <button type="button" class="cancel-modal-btn admin-action-btn">Cancel</button>
+                        <button type="submit" class="save-modal-btn admin-action-btn">Save User</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit User Modal -->
+    <div id="editUserModal" class="admin-modal">
+        <div class="admin-modal-content">
+            <div class="admin-modal-header">
+                <h2>Edit User</h2>
+                <span class="admin-modal-close">&times;</span>
+            </div>
+            <div class="admin-modal-body">
+                <form id="editUserForm">
+                    <input type="hidden" id="editUserId" name="editUserId">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="editFirstName">First Name</label>
+                            <input type="text" id="editFirstName" name="editFirstName" placeholder="First Name"
+                                required>
+                        </div>
+                        <div class="form-group">
+                            <label for="editLastName">Last Name</label>
+                            <input type="text" id="editLastName" name="editLastName" placeholder="Last Name" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="editEmail">Email</label>
+                        <input type="email" id="editEmail" name="editEmail" placeholder="Email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editUsername">Username</label>
+                        <input type="text" id="editUsername" name="editUsername" placeholder="Username" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editPassword">Password</label>
+                        <input type="password" id="editPassword" name="editPassword" placeholder="Password">
+                        <small class="form-text">Leave blank to keep existing password</small>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="editPhone">Phone</label>
+                            <input type="tel" id="editPhone" name="editPhone" placeholder="Phone">
+                        </div>
+                        <div class="form-group">
+                            <label for="editState">State</label>
+                            <div class="select-wrapper">
+                                <select id="editState" name="editState">
+                                    <option value="" disabled selected hidden>State or Territory</option>
+                                    <option value="ACT">Australian Capital Territory</option>
+                                    <option value="NSW">New South Wales</option>
+                                    <option value="NT">Northern Territory</option>
+                                    <option value="QLD">Queensland</option>
+                                    <option value="SA">South Australia</option>
+                                    <option value="TAS">Tasmania</option>
+                                    <option value="VIC">Victoria</option>
+                                    <option value="WA">Western Australia</option>
+                                </select>
+                                <i class="fa-solid fa-angle-down dropdown-icon"></i>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="editPostcode">Postcode</label>
+                            <input type="text" id="editPostcode" name="editPostcode" placeholder="Postcode">
+                        </div>
+                    </div>
+                    <div class="form-group admin-checkbox-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="editIsAdmin" name="editIsAdmin">
+                            <span class="checkmark"></span>
+                            Grant Admin Privileges
+                        </label>
+                        <small class="form-text">Admin users can access the admin panel and manage other users</small>
+                    </div>
+                    <div class="admin-modal-footer">
+                        <button type="button" class="cancel-modal-btn admin-action-btn">Cancel</button>
+                        <button type="submit" class="save-modal-btn admin-action-btn">Update User</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

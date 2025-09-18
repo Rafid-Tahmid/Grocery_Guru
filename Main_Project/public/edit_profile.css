@@ -1,0 +1,587 @@
+/* BASE LAYOUT FOR FULL PAGE HEIGHT AND STICKY FOOTER */
+html,
+body {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    /* Enable flex container for body */
+    flex-direction: column;
+    /* Stack children vertically */
+}
+
+body {
+    background-color: #f0f2f5;
+    /* Consistent background */
+    font-family: 'Poppins', sans-serif;
+    color: #333;
+}
+
+/* MAIN CONTENT AREA ADJUSTMENTS (SCROLLING FIX) */
+.edit-profile-main {
+    padding: 120px 40px 60px;
+    /* Adjusted top padding to clear fixed header */
+    flex-grow: 1;
+    /* Allow main content to take up available space */
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    width: 100%;
+}
+
+.edit-profile-container {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 20px;
+    padding: 40px;
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.edit-profile-container h1 {
+    color: #333;
+    margin-bottom: 30px;
+    text-align: center;
+    font-size: 32px;
+}
+
+.form-section {
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #eee;
+}
+
+.form-section:last-child {
+    border-bottom: none;
+    margin-bottom: 10px;
+    padding-bottom: 0;
+}
+
+.form-section h2 {
+    color: #333;
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.edit-profile-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.field-row {
+    display: flex;
+    gap: 20px;
+    width: 100%;
+}
+
+.field-row input,
+.field-row select {
+    flex: 1;
+    margin-bottom: 0;
+}
+
+.edit-profile-form input[type="text"],
+.edit-profile-form input[type="email"],
+.edit-profile-form input[type="tel"],
+.edit-profile-form input[type="number"],
+.edit-profile-form input[type="password"],
+.edit-profile-form select {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    margin-bottom: 15px;
+    background-color: #f8f8f8;
+    color: #333;
+}
+
+.edit-profile-form input:focus,
+.edit-profile-form select:focus {
+    border-color: #1DD3B0;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(29, 211, 176, 0.2);
+}
+
+.select-wrapper {
+    position: relative;
+    flex: 1;
+}
+
+.select-wrapper select {
+    width: 100%;
+    appearance: none;
+    padding-right: 40px;
+}
+
+.dropdown-icon {
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #666;
+    pointer-events: none;
+}
+
+.password-container {
+    position: relative;
+    width: 100%;
+}
+
+.password-container input {
+    padding-right: 45px;
+    margin-bottom: 15px;
+}
+
+.toggle-password {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #666;
+    cursor: pointer;
+    transition: color 0.3s ease;
+    font-size: 20px;
+    height: auto;
+    width: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.toggle-password:hover {
+    color: #1DD3B0;
+}
+
+.password-hint {
+    color: #666;
+    font-size: 14px;
+    margin-top: -5px;
+    margin-bottom: 20px;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 16px;
+    margin-top: 20px;
+}
+
+.action-btn {
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.action-btn.primary {
+    background: #1DD3B0;
+    color: white;
+    border: none;
+}
+
+.action-btn.primary:hover {
+    background: #19b89a;
+    transform: translateY(-2px);
+}
+
+.action-btn.secondary {
+    background: transparent;
+    color: #666;
+    border: 1px solid #ddd;
+}
+
+.action-btn.secondary:hover {
+    background: #f5f5f5;
+    color: #333;
+}
+
+/* Dark mode styles */
+[data-theme="dark"] .edit-profile-container {
+    background: rgba(45, 45, 45, 0.95);
+}
+
+[data-theme="dark"] .edit-profile-container h1,
+[data-theme="dark"] .form-section h2 {
+    color: #fff;
+}
+
+[data-theme="dark"] .field-row input,
+[data-theme="dark"] .field-row select,
+[data-theme="dark"] .password-container input,
+[data-theme="dark"] .edit-profile-form input[type="email"],
+[data-theme="dark"] .edit-profile-form input[type="tel"] {
+    background-color: #333;
+    border-color: #444;
+    color: #ffffff;
+}
+
+[data-theme="dark"] .field-row input::placeholder,
+[data-theme="dark"] .field-row select,
+[data-theme="dark"] .password-container input::placeholder {
+    color: #999;
+}
+
+[data-theme="dark"] .dropdown-icon,
+[data-theme="dark"] .toggle-password {
+    color: #999;
+}
+
+[data-theme="dark"] .password-hint {
+    color: #bbb;
+}
+
+[data-theme="dark"] .action-btn.secondary {
+    color: #999;
+    border-color: #444;
+}
+
+[data-theme="dark"] .action-btn.secondary:hover {
+    background: #444;
+    color: #fff;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+    .edit-profile-main {
+        padding: 100px 20px 40px;
+    }
+
+    .edit-profile-container {
+        padding: 30px 20px;
+    }
+
+    .field-row {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .select-wrapper {
+        width: 100%;
+    }
+
+    .form-actions {
+        flex-direction: column;
+    }
+
+    .action-btn {
+        width: 100%;
+    }
+
+    .edit-profile-form input[type="text"],
+    .edit-profile-form input[type="email"],
+    .edit-profile-form input[type="tel"],
+    .edit-profile-form input[type="number"],
+    .edit-profile-form input[type="password"],
+    .edit-profile-form select {
+        margin-bottom: 15px;
+    }
+
+    .field-row input,
+    .field-row select {
+        margin-bottom: 15px;
+    }
+}
+
+/* FOOTER STYLES FOR CONSISTENCY AND LAYOUT FIXES */
+footer {
+    width: 100%;
+    background: #f8f9fa;
+    color: #333;
+    padding: 40px 0 0;
+    /* Original padding */
+    margin-top: auto;
+    /* Push footer to the bottom */
+    border-top: 3px solid #1DD3B0;
+}
+
+.footer-content {
+    display: grid;
+    /* Use grid for multi-column layout */
+    grid-template-columns: 1.5fr 1fr 1.2fr;
+    /* Match index.css column distribution */
+    gap: 30px;
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding-bottom: 30px;
+}
+
+.footer-section {
+    display: flex;
+    flex-direction: column;
+}
+
+.footer-heading {
+    color: #129060;
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 15px;
+    position: relative;
+}
+
+.footer-heading::after {
+    content: '';
+    position: absolute;
+    bottom: -6px;
+    left: 0;
+    width: 40px;
+    height: 3px;
+    background: #1DD3B0;
+    border-radius: 2px;
+}
+
+.footer-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-links li {
+    margin-bottom: 10px;
+}
+
+.footer-links a {
+    color: #666;
+    text-decoration: none;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    display: inline-block;
+    padding: 2px 0;
+}
+
+.footer-links a:hover {
+    color: #129060;
+    transform: translateX(5px);
+}
+
+.footer-contact {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.contact-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    color: #666;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.contact-item i {
+    color: #129060;
+    margin-top: 2px;
+    width: 16px;
+    flex-shrink: 0;
+}
+
+.footer-copyright {
+    background: #f0f2f5;
+    padding: 20px 0;
+    border-top: 1px solid #e9ecef;
+}
+
+.copyright-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.copyright-content p {
+    color: #666;
+    font-size: 12px;
+    margin: 0;
+}
+
+/* Dark mode overrides for footer */
+[data-theme="dark"] footer {
+    background: #222;
+    border-top: 3px solid #1DD3B0;
+    color: #eee;
+}
+
+[data-theme="dark"] .footer-description,
+[data-theme="dark"] .footer-links a,
+[data-theme="dark"] .contact-item {
+    color: #bbb;
+}
+
+[data-theme="dark"] .footer-heading {
+    color: #1DD3B0;
+}
+
+[data-theme="dark"] .footer-links a:hover {
+    color: #fff;
+}
+
+[data-theme="dark"] .social-links a {
+    background: #444;
+    color: #bbb;
+}
+
+[data-theme="dark"] .social-links a:hover {
+    background: linear-gradient(135deg, #1DD3B0 0%, #129060 100%);
+    color: white;
+}
+
+[data-theme="dark"] .footer-copyright {
+    background: #333;
+    border-top: 1px solid #444;
+}
+
+[data-theme="dark"] .copyright-content p {
+    color: #bbb;
+}
+
+/* Responsive adjustments for footer */
+@media (max-width: 900px) {
+    .footer-content {
+        grid-template-columns: 1fr 1fr;
+        gap: 30px;
+    }
+
+    .footer-section:first-child {
+        grid-column: 1 / -1;
+    }
+}
+
+@media (max-width: 600px) {
+    .footer-content {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+
+    .copyright-content {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+    }
+
+    .social-links {
+        justify-content: center;
+    }
+}
+
+/* FOOTER CONTROLS STYLES */
+.footer-controls {
+    display: flex;
+    gap: 15px;
+    /* Spacing between the dark mode and back-to-top buttons */
+    align-items: center;
+}
+
+/* Styling for the Dark Mode Toggle Button */
+footer .footer-controls .theme-toggle {
+    background: linear-gradient(135deg, #129060 0%, #1DD3B0 100%);
+    /* Matched index.css gradient */
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    /* Matched index.css transition */
+}
+
+footer .footer-controls .theme-toggle:hover {
+    transform: translateY(-3px);
+    /* Matched index.css transform */
+    box-shadow: 0 4px 12px rgba(18, 144, 96, 0.3);
+    /* Matched index.css shadow */
+}
+
+footer .footer-controls .theme-toggle i {
+    font-size: 20px;
+    /* Explicitly set font size for the icon */
+    color: white;
+    /* Ensure white color for light mode icon */
+}
+
+[data-theme="dark"] footer .footer-controls .theme-toggle {
+    background: #ffd700;
+}
+
+[data-theme="dark"] footer .footer-controls .theme-toggle i {
+    color: #2d2d2d;
+    /* Ensure black color for dark mode icon */
+    transform: rotate(-45deg);
+    /* Added rotation for sun icon */
+}
+
+[data-theme="dark"] footer .footer-controls .theme-toggle:hover {
+    background: #ffd700;
+    /* Ensured background remains yellow on hover */
+    box-shadow: 0 4px 12px rgba(255, 215, 0, 0.3);
+    /* Matched index.css shadow */
+}
+
+/* Existing .back-to-top button styles should be consistent with these */
+.back-to-top {
+    background: linear-gradient(135deg, #129060 0%, #1DD3B0 100%);
+    color: white;
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    box-shadow: 0 4px 12px rgba(18, 144, 96, 0.3);
+}
+
+.back-to-top:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 16px rgba(18, 144, 96, 0.4);
+}
+
+[data-theme="dark"] .back-to-top {
+    background: linear-gradient(135deg, #1DD3B0 0%, #129060 100%);
+    color: #333;
+}
+
+[data-theme="dark"] .back-to-top:hover {
+    color: #fff;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 16px rgba(29, 211, 176, 0.4);
+}
+
+/* Further responsiveness for footer controls */
+@media (max-width: 600px) {
+    .copyright-content {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+    }
+
+    .footer-controls {
+        flex-direction: row;
+        /* Keep buttons in a row even on small screens */
+        justify-content: center;
+        /* Center the buttons */
+        width: 100%;
+        margin-top: 10px;
+        /* Add some space if stacked */
+    }
+}
+
+/* Remove dark mode toggle styling */
+.darkModeToggle {
+    display: flex;
+}

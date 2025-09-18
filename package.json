@@ -1,0 +1,30 @@
+{
+  "name": "25s1_wdc_ug_groups_12",
+  "version": "1.0.0",
+  "description": "Your group's shared repository for the WDC 2023 Web App Project.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node Main_Project/setup.js",
+    "server-only": "node Main_Project/app.js",
+    "refresh-ingredients": "node Main_Project/refresh-ingredients.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.9.0",
+    "bcrypt": "^5.1.1",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "csv-parser": "^3.2.0",
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "express-session": "^1.18.1",
+    "http-errors": "^2.0.0",
+    "jsonwebtoken": "^9.0.2",
+    "morgan": "^1.10.0",
+    "mysql2": "^3.14.1",
+    "nodemailer": "^6.10.1"
+  }
+}

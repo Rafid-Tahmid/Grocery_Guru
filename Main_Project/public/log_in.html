@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Log in - GroceryGuru</title>
+  <link rel="preload" href="login_style.css" as="style" />
+  <link rel="stylesheet" href="login_style.css">
+  <link rel="icon" type="image/x-icon" href="dinner.ico">
+  <script src="log_in.js" defer></script>
+  <script src="https://www.google.com/recaptcha/api.js?render=6Lf0DygrAAAAAJy-KVn83NeszR8jYPRppOWjWSVz" defer></script>
+  <script src="https://kit.fontawesome.com/2df6b0f25d.js" crossorigin="anonymous"></script>
+</head>
+
+<body class="login-page">
+  <div class="background-image"></div>
+  <div class="frosted-overlay"></div>
+  <section class="loginHeader">
+    <a href="index.html">Back</a>
+    <a href="index.html" class="logo">GroceryGuru</a>
+    <div class="header-controls">
+      <button type="button" id="darkModeToggle" class="theme-toggle" aria-label="Toggle dark mode">
+        <i class="fas fa-moon"></i>
+      </button>
+    </div>
+  </section>
+  <div class="container">
+    <div class="form-box">
+      <h1 id="title">Log in</h1>
+
+      <div class="toggle-buttons" role="tablist" aria-label="Authentication type">
+        <button id="loginBtn" type="button" class="active" role="tab" aria-selected="true" aria-controls="loginForm"
+          title="Switch to login form">Log in</button>
+        <button id="signupBtn" type="button" role="tab" aria-selected="false" aria-controls="signupForm"
+          title="Switch to signup form">Sign up</button>
+      </div>
+
+      <form id="form" action="/submit-form" method="POST" role="tabpanel" aria-labelledby="loginBtn">
+        <div class="field-row">
+          <input type="text" id="firstName" name="firstName" class="divider-select" placeholder="First Name"
+            aria-label="First Name" title="Enter your first name">
+          <input type="text" id="lastName" name="lastName" class="divider-select" placeholder="Last Name"
+            aria-label="Last Name" title="Enter your last name">
+        </div>
+        <input type="email" id="email" name="email" placeholder="Email Address" required aria-label="Email Address"
+          title="Enter your email address">
+        <input type="text" id="username" name="username" placeholder="Username" required aria-label="Username"
+          title="Choose a username">
+        <input type="tel" id="phoneNumber" name="phoneNumber" placeholder="Phone Number" aria-label="Phone Number"
+          title="Enter your phone number (optional)">
+        <div class="field-row">
+          <div class="field-row dropdown-wrapper">
+            <div class="select-wrapper">
+              <select id="state" name="state" class="divider-select" required aria-label="State or Territory"
+                title="Select your state or territory">
+                <option value="" disabled selected hidden>State or Territory</option>
+                <option value="ACT">Australian Capital Territory</option>
+                <option value="NSW">New South Wales</option>
+                <option value="NT">Northern Territory</option>
+                <option value="QLD">Queensland</option>
+                <option value="SA">South Australia</option>
+                <option value="TAS">Tasmania</option>
+                <option value="VIC">Victoria</option>
+                <option value="WA">Western Australia</option>
+              </select>
+              <i class="fa-solid fa-angle-down dropdown-icon" aria-hidden="true"></i>
+            </div>
+            <input type="number" id="postcode" name="postcode" placeholder="Postcode" class="divider-select"
+              aria-label="Postcode" title="Enter your postcode">
+          </div>
+        </div>
+        <div class="password-container">
+          <input type="password" id="password" name="password" placeholder="Password" required>
+          <i class="fa-solid fa-eye toggle-password"></i>
+        </div>
+        <div class="password-container">
+          <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm Password" required>
+          <i class="fa-solid fa-eye toggle-password"></i>
+        </div>
+
+        <a href="#" class="forgot">Forgot password?</a>
+        <button type="submit" class="submit-btn">Login</button>
+        <input type="hidden" id="g-recaptcha-response" name="g-recaptcha-response">
+      </form>
+
+      <p class="member-text">
+        <span id="member-login-text">Already a member? <a href="#" id="loginLink">Log in now</a></span>
+        <span id="member-signup-text" style="display: none;">Not a member? <a href="#" id="signupLink">Sign up
+            now</a></span>
+        <span id="back-to-login-text" style="display: none;"><a href="#" id="returnLogin">Back to login</a></span>
+      </p>
+    </div>
+  </div>
+</body>
+
+</html>

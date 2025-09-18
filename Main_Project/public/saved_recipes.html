@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Saved Recipes - GroceryGuru</title>
+    <link rel="preload" href="index.css" as="style" />
+    <link rel="stylesheet" href="index.css" />
+    <link rel="stylesheet" href="saved_recipes.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link rel="icon" type="image/x-icon" href="dinner.ico" />
+    <script src="home.js" defer></script>
+    <script src="saved_recipes.js" defer></script>
+    <script src="https://kit.fontawesome.com/2df6b0f25d.js" crossorigin="anonymous" defer></script>
+</head>
+
+<body class="saved-recipes-page">
+    <div class="background-image"></div>
+    <div class="frosted-overlay"></div>
+
+    <header class="header">
+        <div class="header-content">
+            <a href="index.html" class="logo">GroceryGuru</a>
+
+
+            <nav class="navbar">
+                <a href="index.html">Home</a>
+                <a href="recipe_catalogue.html">Recipes</a>
+                <a href="about_us.html">About</a>
+                <a href="credits.html">Credits</a>
+            </nav>
+
+            <div class="searchAndProfile">
+                <button type="button" id="openSearchModal" class="search-icon-btn">
+                    <i class="fa fa-search" aria-hidden="true"></i>
+                </button>
+                <div class="profile-container">
+                    <i class="fa-regular fa-user"></i>
+                    <div class="profileIconWindow">
+                        <div class="profileCard">
+                            <div class="profileCard-avatar">
+                                <i class="fa-regular fa-user"></i>
+                            </div>
+                            <div class="profileCard-name">
+                                Welcome, User
+                            </div>
+                            <a class="profileCard-bubble login-btn" href="log_in.html">Log in</a>
+                            <a class="profileCard-bubble signout-btn" href="#" style="display: none">Sign out</a>
+                            <a class="profileCard-bubble active" href="saved_recipes.html">Saved Recipes</a>
+                            <a class="profileCard-bubble" href="meal_planner.html">My Meal Plan</a>
+                            <a class="profileCard-bubble" href="edit_profile.html">Edit Profile</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="spotlight-overlay" id="spotlightOverlay">
+        <div class="spotlight-modal">
+            <div class="spotlight-bar searchInputWrapper">
+                <span class="spotlight-search-icon">🔍</span>
+                <input type="text" id="spotlightInput" placeholder="Search..." />
+                <ul id="spotlightSuggestions"></ul>
+            </div>
+        </div>
+    </div>
+
+    <main class="saved-recipes-main">
+        <div class="saved-recipes-container">
+            <!-- Header Section -->
+            <div class="saved-recipes-header">
+                <h1>My Saved Recipes</h1>
+                <p class="saved-recipes-subtitle">Your collection of favorite recipes</p>
+            </div>
+
+            <!-- Filters Section -->
+            <div class="filters-container">
+                <div class="filters-header">
+                    <h3><i class="fas fa-filter"></i> Filter Recipes</h3>
+                    <button type="button" id="clearFilters" class="clear-filters-btn">
+                        <i class="fas fa-times"></i> Clear All
+                    </button>
+                </div>
+
+                <div class="filters-grid">
+                    <!-- Search Filter -->
+                    <div class="filter-group">
+                        <label for="recipeSearch">
+                            <i class="fas fa-search"></i> Search Recipes
+                        </label>
+                        <input type="text" id="recipeSearch" placeholder="Search by name..." />
+                    </div>
+
+
+
+                    <!-- Category Filter -->
+                    <div class="filter-group">
+                        <label for="categoryFilter">
+                            <i class="fas fa-utensils"></i> Category
+                        </label>
+                        <select id="categoryFilter">
+                            <option value="">All Categories</option>
+                            <option value="Beef">Beef</option>
+                            <option value="Chicken">Chicken</option>
+                            <option value="Dessert">Dessert</option>
+                            <option value="Lamb">Lamb</option>
+                            <option value="Miscellaneous">Miscellaneous</option>
+                            <option value="Pasta">Pasta</option>
+                            <option value="Pork">Pork</option>
+                            <option value="Seafood">Seafood</option>
+                            <option value="Side">Side</option>
+                            <option value="Starter">Starter</option>
+                            <option value="Vegan">Vegan</option>
+                            <option value="Vegetarian">Vegetarian</option>
+                        </select>
+                    </div>
+
+                    <!-- Cuisine Filter -->
+                    <div class="filter-group">
+                        <label for="cuisineFilter">
+                            <i class="fas fa-globe"></i> Cuisine
+                        </label>
+                        <select id="cuisineFilter">
+                            <option value="">All Cuisines</option>
+                            <option value="American">American</option>
+                            <option value="British">British</option>
+                            <option value="Canadian">Canadian</option>
+                            <option value="Chinese">Chinese</option>
+                            <option value="Croatian">Croatian</option>
+                            <option value="Dutch">Dutch</option>
+                            <option value="Egyptian">Egyptian</option>
+                            <option value="French">French</option>
+                            <option value="Greek">Greek</option>
+                            <option value="Indian">Indian</option>
+                            <option value="Irish">Irish</option>
+                            <option value="Italian">Italian</option>
+                            <option value="Jamaican">Jamaican</option>
+                            <option value="Japanese">Japanese</option>
+                            <option value="Kenyan">Kenyan</option>
+                            <option value="Malaysian">Malaysian</option>
+                            <option value="Mexican">Mexican</option>
+                            <option value="Moroccan">Moroccan</option>
+                            <option value="Polish">Polish</option>
+                            <option value="Portuguese">Portuguese</option>
+                            <option value="Russian">Russian</option>
+                            <option value="Spanish">Spanish</option>
+                            <option value="Thai">Thai</option>
+                            <option value="Tunisian">Tunisian</option>
+                            <option value="Turkish">Turkish</option>
+                            <option value="Vietnamese">Vietnamese</option>
+                        </select>
+                    </div>
+
+                    <!-- Sort Options -->
+                    <div class="filter-group">
+                        <label for="sortFilter">
+                            <i class="fas fa-sort"></i> Sort By
+                        </label>
+                        <select id="sortFilter">
+                            <option value="date_desc">Recently Saved</option>
+                            <option value="date_asc">Oldest First</option>
+                            <option value="name_asc">Name A-Z</option>
+                            <option value="name_desc">Name Z-A</option>
+                            <option value="category">Category</option>
+                            <option value="cuisine">Cuisine</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Results Section -->
+            <div class="results-container">
+                <div class="results-header">
+                    <div class="results-count">
+                        <span id="recipesCount">0</span> recipe(s) found
+                    </div>
+                    <div class="view-toggle">
+                        <button type="button" id="gridViewBtn" class="view-btn active" title="Grid View">
+                            <i class="fas fa-th"></i>
+                        </button>
+                        <button type="button" id="listViewBtn" class="view-btn" title="List View">
+                            <i class="fas fa-list"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Loading State -->
+                <div id="loadingSpinner" class="loading-container" style="display: none;">
+                    <div class="loading-spinner">
+                        <i class="fas fa-spinner fa-spin"></i>
+                    </div>
+                    <p>Loading your saved recipes...</p>
+                </div>
+
+                <!-- Empty State -->
+                <div id="emptyState" class="empty-state" style="display: none;">
+                    <div class="empty-icon">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <h3>No saved recipes found</h3>
+                    <p>Start exploring recipes and star your favorites!</p>
+                    <a href="index.html" class="explore-btn">
+                        <i class="fas fa-search"></i> Explore Recipes
+                    </a>
+                </div>
+
+                <!-- No Results State -->
+                <div id="noResultsState" class="empty-state" style="display: none;">
+                    <div class="empty-icon">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <h3>No recipes match your filters</h3>
+                    <p>Try adjusting your search criteria</p>
+                    <button type="button" id="clearFiltersBtn" class="explore-btn">
+                        <i class="fas fa-times"></i> Clear Filters
+                    </button>
+                </div>
+
+                <!-- Recipes Grid -->
+                <div id="recipesGrid" class="recipes-grid">
+                    <!-- Recipes will be dynamically loaded here -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Recipe Detail Modal -->
+    <div id="recipeModal" class="recipe-modal">
+        <div class="recipe-modal-content">
+            <div class="recipe-modal-header">
+                <h3 id="modalRecipeTitle">Recipe Details</h3>
+                <button type="button" id="closeRecipeModal" class="modal-close-btn">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="recipe-modal-body">
+                <div id="modalRecipeContent">
+                    <!-- Recipe details will be loaded here -->
+                </div>
+            </div>
+            <div class="recipe-modal-actions">
+                <button type="button" id="addToMealPlanBtn" class="action-btn primary">
+                    <i class="fas fa-calendar-plus"></i> Add to Meal Plan
+                </button>
+                <button type="button" id="removeFromSavedBtn" class="action-btn danger">
+                    <i class="fas fa-trash"></i> Remove from Saved
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add to Meal Plan Modal -->
+    <div id="mealPlanModal" class="meal-plan-modal">
+        <div class="meal-plan-modal-content">
+            <div class="meal-plan-modal-header">
+                <h3>Add to Meal Plan</h3>
+                <button type="button" id="closeMealPlanModal" class="modal-close-btn">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="meal-plan-modal-body">
+                <div class="meal-plan-form">
+                    <div class="form-group">
+                        <label for="mealPlanDay">Day of Week</label>
+                        <select id="mealPlanDay" required>
+                            <option value="">Select Day</option>
+                            <option value="Monday">Monday</option>
+                            <option value="Tuesday">Tuesday</option>
+                            <option value="Wednesday">Wednesday</option>
+                            <option value="Thursday">Thursday</option>
+                            <option value="Friday">Friday</option>
+                            <option value="Saturday">Saturday</option>
+                            <option value="Sunday">Sunday</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="mealPlanType">Meal Type</label>
+                        <select id="mealPlanType" required>
+                            <option value="">Select Meal</option>
+                            <option value="Breakfast">Breakfast</option>
+                            <option value="Lunch">Lunch</option>
+                            <option value="Dinner">Dinner</option>
+                        </select>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" id="cancelMealPlan" class="action-btn secondary">Cancel</button>
+                        <button type="button" id="confirmMealPlan" class="action-btn primary">Add to Plan</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast">
+        <div class="toast-content">
+            <i id="toastIcon" class="fas fa-check-circle"></i>
+            <span id="toastMessage">Action completed successfully</span>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <!-- Company Info -->
+            <div class="footer-section">
+                <img alt="GroceryGuru logo" src="grocery.png" class="footer-logo">
+                <p class="footer-description">The place where your favourite mouth-watering meals are made with
+                    mouth-watering prices. Discover recipes, save money, and eat better.</p>
+                <div class="social-links">
+                    <a href="https://www.linkedin.com/in/kenji-baritua/" target="_blank"
+                        aria-label="Kenji's LinkedIn">
+                        <i class="fa-brands fa-linkedin-in"></i>
+                    </a>
+                    <a href="https://www.linkedin.com/in/rafid-tahmid/" target="_blank" aria-label="Rafid's LinkedIn">
+                        <i class="fa-brands fa-linkedin-in"></i>
+                    </a>
+                    <a href="https://www.linkedin.com/in/andrwong/" target="_blank" aria-label="Andrew's LinkedIn">
+                        <i class="fa-brands fa-linkedin-in"></i>
+                    </a>
+                    <a href="https://www.linkedin.com/in/willjjohnston/" target="_blank" aria-label="Will's LinkedIn">
+                        <i class="fa-brands fa-linkedin-in"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Quick Links -->
+            <div class="footer-section">
+                <h3 class="footer-heading">Quick Links</h3>
+                <ul class="footer-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="recipe_catalogue.html">Recipes</a></li>
+                    <li><a href="about_us.html">About</a></li>
+                    <li><a href="credits.html">Credits</a></li>
+                </ul>
+            </div>
+
+            <!-- Contact Info -->
+            <div class="footer-section">
+                <h3 class="footer-heading">Contact</h3>
+                <div class="footer-contact">
+                    <div class="contact-item">
+                        <i class="fa fa-map-marker"></i>
+                        <span>University of Adelaide<br>North Terrace, Adelaide SA 5000<br>Australia</span>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fa fa-envelope"></i>
+                        <span>hire-us@ineedajob.com</span>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fa fa-phone"></i>
+                        <span>08 8123 4567</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Testimonials -->
+            <div class="footer-section">
+                <h3 class="footer-heading">What Our Users Say</h3>
+                <div class="testimonials-horizontal">
+                    <div class="testimonial-item">
+                        <p>"GroceryGuru saved me so much time and money—it's a game-changer!"</p>
+                        <small>- Mercy</small>
+                    </div>
+                    <div class="testimonial-item">
+                        <p>"I stopped wasting time in grocery lines. Now I shop and cook smarter."</p>
+                        <small>- Prachi</small>
+                    </div>
+                    <div class="testimonial-item">
+                        <p>"Finding the best prices between stores has saved me so much money!"</p>
+                        <small>- Hannah</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Copyright -->
+        <div class="footer-copyright">
+            <div class="copyright-content">
+                <p>© 2025 KRAW. All Rights Reserved | Designed by Kenji Baritua, Rafid Tahmid, Andrew Wong, William
+                    Johnston</p>
+                <div class="footer-controls">
+                    <button type="button" id="darkModeToggle" class="theme-toggle" aria-label="Toggle dark mode">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    <button type="button" class="back-to-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})"
+                        aria-label="Back to top">
+                        <i class="fa fa-arrow-up"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+
+</html>

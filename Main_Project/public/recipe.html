@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recipe - GroceryGuru</title>
+  <link rel="preload" href="index.css" as="style" />
+  <link rel="stylesheet" href="index.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="icon" type="image/x-icon" href="dinner.ico">
+  <script src="home.js" defer></script>
+  <script src="index.js" defer></script>
+  <script src="recipe.js" defer></script>
+  <script src="https://kit.fontawesome.com/2df6b0f25d.js" crossorigin="anonymous" defer></script>
+  <script src="store-locator.js"></script>
+  <script
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB1Qn7n6JiiXkPanwYTIvf5vwNjwUtBEYo&libraries=places&callback=initMap"
+    async defer></script>
+</head>
+
+<body class="about-page">
+  <div class="background-image" id="aboutUs"></div>
+  <div class="frosted-overlay"></div>
+
+  <header class="header">
+    <div class="header-content">
+      <a href="index.html" class="logo">GroceryGuru</a>
+
+      <nav class="navbar">
+        <a href="index.html">Home</a>
+        <a href="recipe_catalogue.html">Recipes</a>
+        <a href="about_us.html">About</a>
+        <a href="credits.html">Credits</a>
+      </nav>
+
+      <div class="searchAndProfile">
+        <button type="button" id="openSearchModal" class="search-icon-btn">
+          <i class="fa fa-search" aria-hidden="true"></i>
+        </button>
+        <div class="profile-container">
+          <i class="fa-regular fa-user"></i>
+          <div class="profileIconWindow">
+            <div class="profileCard">
+              <div class="profileCard-avatar">
+                <i class="fa-regular fa-user"></i>
+              </div>
+              <div class="profileCard-name">Welcome, User</div>
+              <a class="profileCard-bubble login-btn" href="log_in.html">Log in</a>
+              <a class="profileCard-bubble signout-btn" href="#" style="display:none;">Sign out</a>
+              <a class="profileCard-bubble" href="saved_recipes.html">Saved Recipes</a>
+              <a class="profileCard-bubble" href="meal_planner.html">My Meal Plan</a>
+              <a class="profileCard-bubble" href="edit_profile.html" role="menuitem" style="display:none;"
+              title="Edit your profile">Edit Profile</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+  <div class="spotlight-overlay" id="spotlightOverlay">
+    <div class="spotlight-modal">
+      <div class="spotlight-bar searchInputWrapper">
+        <span class="spotlight-search-icon">🔍</span>
+        <input type="text" id="spotlightInput" placeholder="Search..." />
+        <ul id="spotlightSuggestions"></ul>
+      </div>
+    </div>
+  </div>
+
+  <main class="recipe-main">
+    <div class="recipe-content">
+      <div class="recipe-hero">
+        <div class="recipe-hero-content">
+          <div class="recipe-image-container">
+            <button type="button" class="back-button">
+              <i class="fas fa-arrow-left"></i>
+            </button>
+            <img id="recipe-image" src="#" alt="Recipe Image" class="recipe-image" />
+            <button type="button" class="favorite-btn image-favorite-btn" aria-label="Add to favorites">
+              <i class="fa-regular fa-star"></i>
+            </button>
+          </div>
+          <div class="recipe-details">
+            <div class="recipe-header">
+              <div class="recipe-title-split">
+                <h1 class="recipe-title-main">line1</h1>
+                <h1 class="recipe-title-highlight">line2</h1>
+              </div>
+            </div>
+            <div class="recipe-info-boxes">
+              <template class="info-box-template">
+                <div class="recipe-info-box">
+                  <p class="info-title"></p><strong class="info-content"></strong>
+                </div>
+              </template>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <section class="ingredients-section">
+        <h2>Ingredients</h2>
+        <template class="ingredient-row-template">
+          <tr>
+            <td class="ingredient-name"></td>
+            <td><a class="store-logo coles" href="#" target="blank"><img src="coles.jpg" alt="Coles" /></a></td>
+            <td><a class="store-logo woolworths" href="#" target="blank"><img src="woolworths.jpg"
+                  alt="Woolworths" /></a></td>
+            <td class="ingredient-price"></td>
+          </tr>
+        </template>
+
+        <table class="ingredient-table">
+          <thead>
+            <tr>
+              <th>Ingredient</th>
+              <th>Coles</th>
+              <th>Woolworths</th>
+              <th>Price</th>
+            </tr>
+          </thead>
+          <tbody class="ingredient-body"></tbody>
+        </table>
+      </section>
+
+      <section class="instructions-section">
+        <h2>Instructions</h2>
+        <p></p>
+      </section>
+
+      <section class="video-section" id="video-section">
+        <h2>Video Tutorial</h2>
+        <div class="video-container">
+          <p class="video-placeholder">Video loading...</p>
+        </div>
+      </section>
+
+      <section class="related-section">
+        <h2>Related Recipes</h2>
+        <div class="related-grid">
+          <template class="related-card-template">
+            <div class="related-card">
+              <div class="related-card-image-container">
+                <img class="related-card-image" src="..." alt="...">
+                <button type="button" class="favorite-btn" aria-label="Add to favorites">
+                  <i class="fa-regular fa-star"></i>
+                </button>
+              </div>
+              <h3 class="related-card-title">A</h3>
+              <div class="tags-container">
+                <p class="related-card-category"></p>
+                <p class="related-card-cuisine"></p>
+              </div>
+            </div>
+          </template>
+        </div>
+      </section>
+    </div>
+
+    <aside class="store-locator-sidebar">
+      <div class="store-search">
+        <h3>Find Nearby Stores</h3>
+        <p>Locate the closest supermarkets to get your ingredients</p>
+      </div>
+      <div class="store-map" id="map">
+        <div class="map-loading">Loading map...</div>
+      </div>
+      <div id="map-error" style="display: none;" class="error-message"></div>
+      <h4>Nearby Stores:</h4>
+      <div class="store-lists">
+        <div class="store-list-section">
+          <div class="store-list" id="store-list"></div>
+        </div>
+      </div>
+    </aside>
+  </main>
+
+  <footer>
+    <div class="footer-content">
+      <!-- Company Info -->
+      <div class="footer-section">
+        <img alt="GroceryGuru logo" src="grocery.png" class="footer-logo">
+        <p class="footer-description">The place where your favourite mouth-watering meals are made with mouth-watering
+          prices. Discover recipes, save money, and eat better.</p>
+        <div class="social-links">
+          <a href="https://www.linkedin.com/in/kenji-baritua-a98ba6327/" target="_blank" aria-label="Kenji's LinkedIn">
+            <i class="fa-brands fa-linkedin-in"></i>
+          </a>
+          <a href="https://www.linkedin.com/in/rafid-tahmid/" target="_blank" aria-label="Rafid's LinkedIn">
+            <i class="fa-brands fa-linkedin-in"></i>
+          </a>
+          <a href="https://www.linkedin.com/in/andrwong/" target="_blank" aria-label="Andrew's LinkedIn">
+            <i class="fa-brands fa-linkedin-in"></i>
+          </a>
+          <a href="https://www.linkedin.com/in/willjjohnston/" target="_blank" aria-label="Will's LinkedIn">
+            <i class="fa-brands fa-linkedin-in"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- Quick Links -->
+      <div class="footer-section">
+        <h3 class="footer-heading">Quick Links</h3>
+        <ul class="footer-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="recipe_catalogue.html">Recipes</a></li>
+          <li><a href="about_us.html">About</a></li>
+          <li><a href="credits.html">Credits</a></li>
+        </ul>
+      </div>
+
+      <!-- Contact Info -->
+      <div class="footer-section">
+        <h3 class="footer-heading">Contact</h3>
+        <div class="footer-contact">
+          <div class="contact-item">
+            <i class="fa fa-map-marker"></i>
+            <span>University of Adelaide<br>North Terrace, Adelaide SA 5000<br>Australia</span>
+          </div>
+          <div class="contact-item">
+            <i class="fa fa-envelope"></i>
+            <span>hire-us@ineedajob.com</span>
+          </div>
+          <div class="contact-item">
+            <i class="fa fa-phone"></i>
+            <span>08 8123 4567</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Testimonials -->
+      <div class="footer-section">
+        <h3 class="footer-heading">What Our Users Say</h3>
+        <div class="testimonials-horizontal">
+          <div class="testimonial-item">
+            <p>"GroceryGuru saved me so much time and money—it's a game-changer!"</p>
+            <small>- Mercy</small>
+          </div>
+          <div class="testimonial-item">
+            <p>"I stopped wasting time in grocery lines. Now I shop and cook smarter."</p>
+            <small>- Prachi</small>
+          </div>
+          <div class="testimonial-item">
+            <p>"Finding the best prices between stores has saved me so much money!"</p>
+            <small>- Hannah</small>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Copyright -->
+    <div class="footer-copyright">
+      <div class="copyright-content">
+        <p>© 2025 KRAW. All Rights Reserved | Designed by Kenji Baritua, Rafid Tahmid, Andrew Wong, William Johnston</p>
+        <div class="footer-controls">
+          <button type="button" id="darkModeToggle" class="theme-toggle" aria-label="Toggle dark mode">
+            <i class="fas fa-moon"></i>
+          </button>
+          <button type="button" class="back-to-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})"
+            aria-label="Back to top">
+            <i class="fa fa-arrow-up"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </footer>
+</body>
+
+</html>

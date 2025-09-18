@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Meal Plan - GroceryGuru</title>
+    <link rel="preload" href="index.css" as="style" />
+    <link rel="stylesheet" href="index.css" />
+    <link rel="stylesheet" href="meal_planner.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link rel="icon" type="image/x-icon" href="dinner.ico" />
+    <script src="home.js" defer></script>
+    <script src="saved_recipes.js" defer></script>
+    <script src="meal_planner.js" defer></script>
+    <script src="https://kit.fontawesome.com/2df6b0f25d.js" crossorigin="anonymous" defer></script>
+</head>
+
+<body class="meal-planner-page">
+    <div class="background-image"></div>
+    <div class="frosted-overlay"></div>
+
+    <header class="header">
+        <div class="header-content">
+            <a href="index.html" class="logo">GroceryGuru</a>
+
+            <nav class="navbar">
+                <a href="index.html">Home</a>
+                <a href="recipe_catalogue.html">Recipes</a>
+                <a href="about_us.html">About</a>
+                <a href="credits.html">Credits</a>
+            </nav>
+
+            <div class="searchAndProfile">
+                <button type="button" id="openSearchModal" class="search-icon-btn">
+                    <i class="fa fa-search" aria-hidden="true"></i>
+                </button>
+                <div class="profile-container">
+                    <i class="fa-regular fa-user"></i>
+                    <div class="profileIconWindow">
+                        <div class="profileCard">
+                            <div class="profileCard-avatar">
+                                <i class="fa-regular fa-user"></i>
+                            </div>
+                            <div class="profileCard-name">
+                                Welcome, User
+                            </div>
+                            <a class="profileCard-bubble login-btn" href="log_in.html">Log in</a>
+                            <a class="profileCard-bubble signout-btn" href="#" style="display: none">Sign out</a>
+                            <a class="profileCard-bubble" href="saved_recipes.html">Saved Recipes</a>
+                            <a class="profileCard-bubble" href="meal_planner.html">My Meal Plan</a>
+                            <a class="profileCard-bubble" href="edit_profile.html">Edit Profile</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="spotlight-overlay" id="spotlightOverlay">
+        <div class="spotlight-modal">
+            <div class="spotlight-bar searchInputWrapper">
+                <span class="spotlight-search-icon">🔍</span>
+                <input type="text" id="spotlightInput" placeholder="Search..." />
+                <ul id="spotlightSuggestions"></ul>
+            </div>
+        </div>
+    </div>
+
+    <main class="meal-planner-main" role="main">
+        <div class="meal-planner-container">
+            <div class="meal-planner-header">
+                <h1>My Meal Plan</h1>
+                <div class="meal-planner-controls">
+                    <div class="planner-actions">
+                        <button type="button" id="clearWeek" class="action-btn clear-btn"
+                            aria-label="Clear all meals for the week" title="Remove all meals from your weekly plan">
+                            <i class="fas fa-trash" aria-hidden="true"></i>
+                            Clear Week
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="meal-planner-grid" role="grid" aria-label="Weekly meal plan">
+                <div class="day-column" data-day="Monday" role="gridcell">
+                    <div class="day-header">
+                        <h3>Monday</h3>
+                    </div>
+                    <div class="meal-slots" role="list" aria-label="Monday meals">
+                        <div class="meal-slot" data-meal="Breakfast" role="listitem">
+                            <div class="meal-type">
+                                <i class="fas fa-coffee" aria-hidden="true"></i>
+                                <span>Breakfast</span>
+                            </div>
+                            <div class="meal-content" data-day="Monday" data-meal="Breakfast" role="region"
+                                aria-label="Monday breakfast">
+                                <div class="add-meal-btn" role="button" tabindex="0"
+                                    aria-label="Add recipe for Monday breakfast"
+                                    title="Click to add a breakfast recipe for Monday">
+                                    <i class="fas fa-plus" aria-hidden="true"></i>
+                                    <span>Add Recipe</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="meal-slot" data-meal="Lunch" role="listitem">
+                            <div class="meal-type">
+                                <i class="fas fa-utensils" aria-hidden="true"></i>
+                                <span>Lunch</span>
+                            </div>
+                            <div class="meal-content" data-day="Monday" data-meal="Lunch" role="region"
+                                aria-label="Monday lunch">
+                                <div class="add-meal-btn" role="button" tabindex="0"
+                                    aria-label="Add recipe for Monday lunch"
+                                    title="Click to add a lunch recipe for Monday">
+                                    <i class="fas fa-plus" aria-hidden="true"></i>
+                                    <span>Add Recipe</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="meal-slot" data-meal="Dinner" role="listitem">
+                            <div class="meal-type">
+                                <i class="fas fa-moon" aria-hidden="true"></i>
+                                <span>Dinner</span>
+                            </div>
+                            <div class="meal-content" data-day="Monday" data-meal="Dinner" role="region"
+                                aria-label="Monday dinner">
+                                <div class="add-meal-btn" role="button" tabindex="0"
+                                    aria-label="Add recipe for Monday dinner"
+                                    title="Click to add a dinner recipe for Monday">
+                                    <i class="fas fa-plus" aria-hidden="true"></i>
+                                    <span>Add Recipe</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="day-column" data-day="Tuesday" role="gridcell">
+                    <div class="day-header">
+                        <h3>Tuesday</h3>
+                    </div>
+                    <div class="meal-slots" role="list" aria-label="Tuesday meals">
+                        <div class="meal-slot" data-meal="Breakfast" role="listitem">
+                            <div class="meal-type">
+                                <i class="fas fa-coffee" aria-hidden="true"></i>
+                                <span>Breakfast</span>
+                            </div>
+                            <div class="meal-content" data-day="Tuesday" data-meal="Breakfast" role="region"
+                                aria-label="Tuesday breakfast">
+                                <div class="add-meal-btn" role="button" tabindex="0"
+                                    aria-label="Add recipe for Tuesday breakfast"
+                                    title="Click to add a breakfast recipe for Tuesday">
+                                    <i class="fas fa-plus" aria-hidden="true"></i>
+                                    <span>Add Recipe</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="meal-slot" data-meal="Lunch" role="listitem">
+                            <div class="meal-type">
+                                <i class="fas fa-utensils" aria-hidden="true"></i>
+                                <span>Lunch</span>
+                            </div>
+                            <div class="meal-content" data-day="Tuesday" data-meal="Lunch" role="region"
+                                aria-label="Tuesday lunch">
+                                <div class="add-meal-btn" role="button" tabindex="0"
+                                    aria-label="Add recipe for Tuesday lunch"
+                                    title="Click to add a lunch recipe for Tuesday">
+                                    <i class="fas fa-plus" aria-hidden="true"></i>
+                                    <span>Add Recipe</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="meal-slot" data-meal="Dinner" role="listitem">
+                            <div class="meal-type">
+                                <i class="fas fa-moon" aria-hidden="true"></i>
+                                <span>Dinner</span>
+                            </div>
+                            <div class="meal-content" data-day="Tuesday" data-meal="Dinner" role="region"
+                                aria-label="Tuesday dinner">
+                                <div class="add-meal-btn" role="button" tabindex="0"
+                                    aria-label="Add recipe for Tuesday dinner"
+                                    title="Click to add a dinner recipe for Tuesday">
+                                    <i class="fas fa-plus" aria-hidden="true"></i>
+                                    <span>Add Recipe</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="day-column" data-day="Wednesday" role="gridcell">
+                    <div class="day-header">
+                        <h3>Wednesday</h3>
+                    </div>
+                    <div class="meal-slots" role="list" aria-label="Wednesday meals">
+                        <div class="meal-slot" data-meal="Breakfast" role="listitem">
+                            <div class="meal-type">
+                                <i class="fas fa-coffee" aria-hidden="true"></i>
+                                <span>Breakfast</span>
+                            </div>
+                            <div class="meal-content" data-day="Wednesday" data-meal="Breakfast" role="region"
+                                aria-label="Wednesday breakfast">
+                                <div class="add-meal-btn" role="button" tabindex="0"
+                                    aria-label="Add recipe for Wednesday breakfast"
+                                    title="Click to add a breakfast recipe for Wednesday">
+                                    <i class="fas fa-plus" aria-hidden="true"></i>
+                                    <span>Add Recipe</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="meal-slot" data-meal="Lunch" role="listitem">
+                            <div class="meal-type">
+                                <i class="fas fa-utensils" aria-hidden="true"></i>
+                                <span>Lunch</span>
+                            </div>
+                            <div class="meal-content" data-day="Wednesday" data-meal="Lunch" role="region"
+                                aria-label="Wednesday lunch">
+                                <div class="add-meal-btn" role="button" tabindex="0"
+                                    aria-label="Add recipe for Wednesday lunch"
+                                    title="Click to add a lunch recipe for Wednesday">
+                                    <i class="fas fa-plus" aria-hidden="true"></i>
+                                    <span>Add Recipe</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="meal-slot" data-meal="Dinner" role="listitem">
+                            <div class="meal-type">
+                                <i class="fas fa-moon" aria-hidden="true"></i>
+                                <span>Dinner</span>
+                            </div>
+                            <div class="meal-content" data-day="Wednesday" data-meal="Dinner" role="region"
+                                aria-label="Wednesday dinner">
+                                <div class="add-meal-btn" role="button" tabindex="0"
+                                    aria-label="Add recipe for Wednesday dinner"
+                                    title="Click to add a dinner recipe for Wednesday">
+                                    <i class="fas fa-plus" aria-hidden="true"></i>
+                                    <span>Add Recipe</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="day-column" data-day="Thursday" role="gridcell">
+                    <div class="day-header">
+                        <h3>Thursday</h3>
+                    </div>
+                    <div class="meal-slots" role="list" aria-label="Thursday meals">
+                        <div class="meal-slot" data-meal="Breakfast" role="listitem">
+                            <div class="meal-type">
+                                <i class="fas fa-coffee" aria-hidden="true"></i>
+                                <span>Breakfast</span>
+                            </div>
+                            <div class="meal-content" data-day="Thursday" data-meal="Breakfast" role="region"
+                                aria-label="Thursday breakfast">
+                                <div class="add-meal-btn" role="button" tabindex="0"
+                                    aria-label="Add recipe for Thursday breakfast"
+                                    title="Click to add a breakfast recipe for Thursday">
+                                    <i class="fas fa-plus" aria-hidden="true"></i>
+                                    <span>Add Recipe</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="meal-slot" data-meal="Lunch" role="listitem">
+                            <div class="meal-type">
+                                <i class="fas fa-utensils" aria-hidden="true"></i>
+                                <span>Lunch</span>
+                            </div>
+                            <div class="meal-content" data-day="Thursday" data-meal="Lunch" role="region"
+                                aria-label="Thursday lunch">
+                                <div class="add-meal-btn" role="button" tabindex="0"
+                                    aria-label="Add recipe for Thursday lunch"
+                                    title="Click to add a lunch recipe for Thursday">
+                                    <i class="fas fa-plus" aria-hidden="true"></i>
+                                    <span>Add Recipe</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="meal-slot" data-meal="Dinner" role="listitem">
+                            <div class="meal-type">
+                                <i class="fas fa-moon" aria-hidden="true"></i>
+                                <span>Dinner</span>
+                            </div>
+                            <div class="meal-content" data-day="Thursday" data-meal="Dinner" role="region"
+                                aria-label="Thursday dinner">
+                                <div class="add-meal-btn" role="button" tabindex="0"
+                                    aria-label="Add recipe for Thursday dinner"
+                                    title="Click to add a dinner recipe for Thursday">
+                                    <i class="fas fa-plus" aria-hidden="true"></i>
+                                    <span>Add Recipe</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="day-column" data-day="Friday" role="gridcell">
+                    <div class="day-header">
+                        <h3>Friday</h3>
+                    </div>
+                    <div class="meal-slots" role="list" aria-label="Friday meals">
+                        <div class="meal-slot" data-meal="Breakfast" role="listitem">
+                            <div class="meal-type">
+                                <i class="fas fa-coffee" aria-hidden="true"></i>
+                                <span>Breakfast</span>
+                            </div>
+                            <div class="meal-content" data-day="Friday" data-meal="Breakfast" role="region"
+                                aria-label="Friday breakfast">
+                                <div class="add-meal-btn" role="button" tabindex="0"
+                                    aria-label="Add recipe for Friday breakfast"
+                                    title="Click to add a breakfast recipe for Friday">
+                                    <i class="fas fa-plus" aria-hidden="true"></i>
+                                    <span>Add Recipe</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="meal-slot" data-meal="Lunch" role="listitem">
+                            <div class="meal-type">
+                                <i class="fas fa-utensils" aria-hidden="true"></i>
+                                <span>Lunch</span>
+                            </div>
+                            <div class="meal-content" data-day="Friday" data-meal="Lunch" role="region"
+                                aria-label="Friday lunch">
+                                <div class="add-meal-btn" role="button" tabindex="0"
+                                    aria-label="Add recipe for Friday lunch"
+                                    title="Click to add a lunch recipe for Friday">
+                                    <i class="fas fa-plus" aria-hidden="true"></i>
+                                    <span>Add Recipe</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="meal-slot" data-meal="Dinner" role="listitem">
+                            <div class="meal-type">
+                                <i class="fas fa-moon" aria-hidden="true"></i>
+                                <span>Dinner</span>
+                            </div>
+                            <div class="meal-content" data-day="Friday" data-meal="Dinner" role="region"
+                                aria-label="Friday dinner">
+                                <div class="add-meal-btn" role="button" tabindex="0"
+                                    aria-label="Add recipe for Friday dinner"
+                                    title="Click to add a dinner recipe for Friday">
+                                    <i class="fas fa-plus" aria-hidden="true"></i>
+                                    <span>Add Recipe</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="day-column" data-day="Saturday" role="gridcell">
+                    <div class="day-header">
+                        <h3>Saturday</h3>
+                    </div>
+                    <div class="meal-slots" role="list" aria-label="Saturday meals">
+                        <div class="meal-slot" data-meal="Breakfast" role="listitem">
+                            <div class="meal-type">
+                                <i class="fas fa-coffee" aria-hidden="true"></i>
+                                <span>Breakfast</span>
+                            </div>
+                            <div class="meal-content" data-day="Saturday" data-meal="Breakfast" role="region"
+                                aria-label="Saturday breakfast">
+                                <div class="add-meal-btn" role="button" tabindex="0"
+                                    aria-label="Add recipe for Saturday breakfast"
+                                    title="Click to add a breakfast recipe for Saturday">
+                                    <i class="fas fa-plus" aria-hidden="true"></i>
+                                    <span>Add Recipe</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="meal-slot" data-meal="Lunch" role="listitem">
+                            <div class="meal-type">
+                                <i class="fas fa-utensils" aria-hidden="true"></i>
+                                <span>Lunch</span>
+                            </div>
+                            <div class="meal-content" data-day="Saturday" data-meal="Lunch" role="region"
+                                aria-label="Saturday lunch">
+                                <div class="add-meal-btn" role="button" tabindex="0"
+                                    aria-label="Add recipe for Saturday lunch"
+                                    title="Click to add a lunch recipe for Saturday">
+                                    <i class="fas fa-plus" aria-hidden="true"></i>
+                                    <span>Add Recipe</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="meal-slot" data-meal="Dinner" role="listitem">
+                            <div class="meal-type">
+                                <i class="fas fa-moon" aria-hidden="true"></i>
+                                <span>Dinner</span>
+                            </div>
+                            <div class="meal-content" data-day="Saturday" data-meal="Dinner" role="region"
+                                aria-label="Saturday dinner">
+                                <div class="add-meal-btn" role="button" tabindex="0"
+                                    aria-label="Add recipe for Saturday dinner"
+                                    title="Click to add a dinner recipe for Saturday">
+                                    <i class="fas fa-plus" aria-hidden="true"></i>
+                                    <span>Add Recipe</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="day-column" data-day="Sunday" role="gridcell">
+                    <div class="day-header">
+                        <h3>Sunday</h3>
+                    </div>
+                    <div class="meal-slots" role="list" aria-label="Sunday meals">
+                        <div class="meal-slot" data-meal="Breakfast" role="listitem">
+                            <div class="meal-type">
+                                <i class="fas fa-coffee" aria-hidden="true"></i>
+                                <span>Breakfast</span>
+                            </div>
+                            <div class="meal-content" data-day="Sunday" data-meal="Breakfast" role="region"
+                                aria-label="Sunday breakfast">
+                                <div class="add-meal-btn" role="button" tabindex="0"
+                                    aria-label="Add recipe for Sunday breakfast"
+                                    title="Click to add a breakfast recipe for Sunday">
+                                    <i class="fas fa-plus" aria-hidden="true"></i>
+                                    <span>Add Recipe</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="meal-slot" data-meal="Lunch" role="listitem">
+                            <div class="meal-type">
+                                <i class="fas fa-utensils" aria-hidden="true"></i>
+                                <span>Lunch</span>
+                            </div>
+                            <div class="meal-content" data-day="Sunday" data-meal="Lunch" role="region"
+                                aria-label="Sunday lunch">
+                                <div class="add-meal-btn" role="button" tabindex="0"
+                                    aria-label="Add recipe for Sunday lunch"
+                                    title="Click to add a lunch recipe for Sunday">
+                                    <i class="fas fa-plus" aria-hidden="true"></i>
+                                    <span>Add Recipe</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="meal-slot" data-meal="Dinner" role="listitem">
+                            <div class="meal-type">
+                                <i class="fas fa-moon" aria-hidden="true"></i>
+                                <span>Dinner</span>
+                            </div>
+                            <div class="meal-content" data-day="Sunday" data-meal="Dinner" role="region"
+                                aria-label="Sunday dinner">
+                                <div class="add-meal-btn" role="button" tabindex="0"
+                                    aria-label="Add recipe for Sunday dinner"
+                                    title="Click to add a dinner recipe for Sunday">
+                                    <i class="fas fa-plus" aria-hidden="true"></i>
+                                    <span>Add Recipe</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Recipe Selection Modal -->
+    <div id="recipeModal" class="recipe-modal">
+        <div class="recipe-modal-content">
+            <div class="recipe-modal-header">
+                <h3>Select a Recipe</h3>
+                <span class="modal-close recipe-modal-close">&times;</span>
+            </div>
+            <div class="recipe-modal-body">
+                <div class="recipe-search">
+                    <input type="text" id="recipeSearchInput" placeholder="Search for recipes..." />
+                    <button type="button" id="searchRecipesBtn">
+                        <i class="fa fa-search"></i>
+                    </button>
+                </div>
+                <div class="recipe-tabs">
+                    <button type="button" class="recipe-tab active" data-tab="saved">
+                        Saved Recipes
+                    </button>
+                    <button type="button" class="recipe-tab" data-tab="search">
+                        Search Results
+                    </button>
+                </div>
+                <div class="recipe-results" id="recipeResults">
+                    <div class="loading-message">
+                        Search for recipes to add to your meal plan
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Toast Notification -->
+    <div id="toast" class="toast">
+        <div class="toast-content">
+            <i id="toastIcon" class="fas fa-check-circle"></i>
+            <span id="toastMessage">Action completed successfully</span>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <img alt="GroceryGuru logo" src="grocery.png" class="footer-logo" />
+                <p class="footer-description">
+                    The place where your favourite mouth-watering meals are
+                    made with mouth-watering prices. Discover recipes, save
+                    money, and eat better.
+                </p>
+                <div class="social-links">
+                    <a href="https://www.linkedin.com/in/kenji-baritua/" target="_blank" aria-label="Kenji's LinkedIn">
+                        <i class="fa-brands fa-linkedin-in"></i>
+                    </a>
+                    <a href="https://www.linkedin.com/in/rafid-tahmid/" target="_blank" aria-label="Rafid's LinkedIn">
+                        <i class="fa-brands fa-linkedin-in"></i>
+                    </a>
+                    <a href="https://www.linkedin.com/in/andrwong/" target="_blank" aria-label="Andrew's LinkedIn">
+                        <i class="fa-brands fa-linkedin-in"></i>
+                    </a>
+                    <a href="https://www.linkedin.com/in/willjjohnston/" target="_blank" aria-label="Will's LinkedIn">
+                        <i class="fa-brands fa-linkedin-in"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Quick Links -->
+            <div class="footer-section">
+                <h3 class="footer-heading">Quick Links</h3>
+                <ul class="footer-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="recipe_catalogue.html">Recipes</a></li>
+                    <li><a href="about_us.html">About</a></li>
+                    <li><a href="credits.html">Credits</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h3 class="footer-heading">Contact</h3>
+                <div class="footer-contact">
+                    <div class="contact-item">
+                        <i class="fa fa-map-marker"></i>
+                        <span>University of Adelaide<br />North Terrace,
+                            Adelaide SA 5000<br />Australia</span>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fa fa-envelope"></i>
+                        <span>hire-us@ineedajob.com</span>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fa fa-phone"></i>
+                        <span>08 8123 4567</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-section">
+                <h3 class="footer-heading">What Our Users Say</h3>
+                <div class="testimonials-horizontal">
+                    <div class="testimonial-item">
+                        <p>
+                            "GroceryGuru saved me so much time and
+                            money—it's a game-changer!"
+                        </p>
+                        <small>- Mercy</small>
+                    </div>
+                    <div class="testimonial-item">
+                        <p>
+                            "I stopped wasting time in grocery lines. Now I
+                            shop and cook smarter."
+                        </p>
+                        <small>- Prachi</small>
+                    </div>
+                    <div class="testimonial-item">
+                        <p>
+                            "Finding the best prices between stores has
+                            saved me so much money!"
+                        </p>
+                        <small>- Hannah</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-copyright">
+            <div class="copyright-content">
+                <p>
+                    © 2025 KRAW. All Rights Reserved | Designed by Kenji
+                    Baritua, Rafid Tahmid, Andrew Wong, William Johnston
+                </p>
+                <div class="footer-controls">
+                    <button type="button" id="darkModeToggle" class="theme-toggle" aria-label="Toggle dark mode">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    <button type="button" class="back-to-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})"
+                        aria-label="Back to top">
+                        <i class="fa fa-arrow-up"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+
+</html>
