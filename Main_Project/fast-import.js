@@ -14,7 +14,7 @@ async function fastImport() {
   let connection;
 
   try {
-    console.log('🚀 Fast CSV import starting...');
+    console.log('Fast CSV import starting...');
 
     // Get database credentials
     const host = process.env.MYSQLHOST || process.env.DB_HOST || 'localhost';
@@ -23,7 +23,7 @@ async function fastImport() {
     const password = process.env.MYSQLPASSWORD || process.env.DB_PASSWORD;
     const database = process.env.MYSQLDATABASE || process.env.DB_NAME || 'railway';
 
-    console.log(`📡 Connecting to ${host}:${port}...`);
+    console.log(`Connecting to ${host}:${port}...`);
     connection = await mysql.createConnection({
       host,
       port,
@@ -32,16 +32,16 @@ async function fastImport() {
       database,
       connectTimeout: 20000
     });
-    console.log('✅ Connected!');
+    console.log('Connected!');
 
     // Clear existing data
-    console.log('🗑️  Clearing old data...');
+    console.log('Clearing old data...');
     await connection.query('DELETE FROM ingredients');
-    console.log('✅ Cleared!');
+    console.log('Cleared!');
 
     // Read CSV
     const csvPath = path.join(__dirname, 'merged_store_data.csv');
-    console.log(`📄 Reading: ${csvPath}`);
+    console.log(`Reading: ${csvPath}`);
 
     const products = [];
     
@@ -65,17 +65,17 @@ async function fastImport() {
           products.push([store, productName, price, link, category]);
 
           if (products.length % 1000 === 0) {
-            console.log(`  📊 Processed ${products.length} rows...`);
+            console.log(`Processed ${products.length} rows...`);
           }
         })
         .on('end', resolve)
         .on('error', reject);
     });
 
-    console.log(`✅ Read ${products.length} products from CSV`);
+    console.log(`Read ${products.length} products from CSV`);
 
     // Insert in batches
-    console.log('💾 Inserting into database...');
+    console.log('Inserting into database...');
     const batchSize = 500;
     let inserted = 0;
 
@@ -86,12 +86,12 @@ async function fastImport() {
         [batch]
       );
       inserted += batch.length;
-      console.log(`  ✅ Inserted ${inserted}/${products.length} products`);
+      console.log(`Inserted ${inserted}/${products.length} products`);
     }
 
     // Verify
     const [result] = await connection.query('SELECT COUNT(*) as count FROM ingredients');
-    console.log(`\n🎉 Import complete! Total products: ${result[0].count}`);
+    console.log(`\nImport complete! Total products: ${result[0].count}`);
 
     const [stats] = await connection.query(`
       SELECT store, COUNT(*) as count 
@@ -102,7 +102,7 @@ async function fastImport() {
     stats.forEach(s => console.log(`   ${s.store}: ${s.count}`));
 
   } catch (error) {
-    console.error('❌ Error:', error.message);
+    console.error('Error:', error.message);
     throw error;
   } finally {
     if (connection) await connection.end();

@@ -32,7 +32,7 @@ async function importCSV() {
   let connection;
 
   try {
-    log('🚀 Starting CSV import to Railway database...', colors.bold + colors.blue);
+    log(' Starting CSV import to Railway database...', colors.bold + colors.blue);
 
     // Get database credentials
     const host = process.env.MYSQLHOST || process.env.DB_HOST;
@@ -42,7 +42,7 @@ async function importCSV() {
     const database = process.env.MYSQLDATABASE || process.env.DB_NAME;
 
     if (!host || !user || !password || !database) {
-      log('❌ Missing database credentials!', colors.red);
+      log(' Missing database credentials!', colors.red);
       log('Required: MYSQLHOST, MYSQLUSER, MYSQLPASSWORD, MYSQLDATABASE', colors.yellow);
       process.exit(1);
     }
@@ -57,21 +57,21 @@ async function importCSV() {
       database,
       connectTimeout: 20000
     });
-    log('✅ Connected successfully!', colors.green);
+    log(' Connected successfully!', colors.green);
 
     // Clear existing data
-    log('🗑️  Clearing existing ingredients...', colors.yellow);
+    log('  Clearing existing ingredients...', colors.yellow);
     await connection.query('DELETE FROM ingredients');
-    log('✅ Cleared!', colors.green);
+    log(' Cleared!', colors.green);
 
     // Read and import CSV
     const csvPath = path.join(__dirname, 'merged_store_data.csv');
     if (!fs.existsSync(csvPath)) {
-      log('❌ CSV file not found: ' + csvPath, colors.red);
+      log(' CSV file not found: ' + csvPath, colors.red);
       process.exit(1);
     }
 
-    log(`📄 Reading CSV file: ${csvPath}`, colors.blue);
+    log(` Reading CSV file: ${csvPath}`, colors.blue);
 
     const fileStream = fs.createReadStream(csvPath);
     const rl = readline.createInterface({
@@ -156,9 +156,9 @@ async function importCSV() {
       imported += batch.length;
     }
 
-    log(`\n✅ Import completed!`, colors.green);
-    log(`   📦 Total imported: ${imported}`, colors.green);
-    log(`   ⏭️  Skipped (invalid): ${skipped}`, colors.yellow);
+    log(`\n Import completed!`, colors.green);
+    log(`Total imported: ${imported}`, colors.green);
+    log(`Skipped (invalid): ${skipped}`, colors.yellow);
 
     // Verify import
     const [stats] = await connection.query(`
@@ -170,16 +170,16 @@ async function importCSV() {
       GROUP BY store
     `);
 
-    log(`\n📊 Import Statistics:`, colors.bold + colors.blue);
+    log(`\nImport Statistics:`, colors.bold + colors.blue);
     stats.forEach(row => {
-      log(`   ${row.store}: ${row.count} products (${row.with_price} with prices)`, colors.blue);
+      log(`${row.store}: ${row.count} products (${row.with_price} with prices)`, colors.blue);
     });
 
     const [total] = await connection.query('SELECT COUNT(*) as total FROM ingredients');
-    log(`\n🎉 Total records in database: ${total[0].total}`, colors.bold + colors.green);
+    log(`\nTotal records in database: ${total[0].total}`, colors.bold + colors.green);
 
   } catch (error) {
-    log('\n❌ Import failed:', colors.red);
+    log('\nImport failed:', colors.red);
     log(error.message, colors.red);
     if (error.stack) {
       log(error.stack, colors.red);
@@ -188,7 +188,7 @@ async function importCSV() {
   } finally {
     if (connection) {
       await connection.end();
-      log('\n👋 Database connection closed', colors.blue);
+      log('\nDatabase connection closed', colors.blue);
     }
   }
 }

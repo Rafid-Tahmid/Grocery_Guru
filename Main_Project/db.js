@@ -31,21 +31,21 @@ if (typeof connectionConfig === 'string') {
 // Test the connection
 connection.connect((err) => {
   if (err) {
-    console.error('❌ Database connection failed:', err.message);
+    console.error(' Database connection failed:', err.message);
     console.error('Connection attempted with:', {
       host: typeof connectionConfig === 'string' ? 'from URL' : connectionConfig.host,
       user: typeof connectionConfig === 'string' ? 'from URL' : connectionConfig.user,
       database: typeof connectionConfig === 'string' ? 'from URL' : connectionConfig.database
     });
-    console.error('\n🔍 Available Railway MySQL variables:');
+    console.error('\n Available Railway MySQL variables:');
     console.error('  MYSQLHOST:', process.env.MYSQLHOST || '(not set)');
     console.error('  MYSQLUSER:', process.env.MYSQLUSER || '(not set)');
     console.error('  MYSQLDATABASE:', process.env.MYSQLDATABASE || '(not set)');
     console.error('  MYSQL_URL:', process.env.MYSQL_URL ? 'set' : '(not set)');
-    console.error('\n💡 Make sure you have added a MySQL database in Railway and linked it to this service!');
+    console.error('\n Make sure you have added a MySQL database in Railway and linked it to this service!');
     // Don't throw - let the app start so we can see error pages
   } else {
-    console.log('✅ Connected to MySQL database successfully!');
+    console.log(' Connected to MySQL database successfully!');
   }
 });
 

@@ -857,6 +857,51 @@ app.get('/api/saved-recipes/:id', authMiddleware, (req, res) => {
   });
 });
 
+// Test email endpoint (for debugging)
+app.get('/test-email', async (req, res) => {
+  const nodemailer = require('nodemailer');
+  
+  const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASS
+    }
+  });
+
+  try {
+    // Verify connection
+    await transporter.verify();
+    
+    const info = await transporter.sendMail({
+      from: `"GroceryGuru Test" <${process.env.EMAIL_USER}>`,
+      to: process.env.EMAIL_USER,
+      subject: 'Test Email from GroceryGuru',
+      html: '<h1>Email is working!</h1><p>If you see this, your email configuration is correct.</p>'
+    });
+
+    res.send(`
+      <h1>Email Test Results</h1>
+      <p> Connection verified</p>
+      <p> Test email sent to: ${process.env.EMAIL_USER}</p>
+      <p>Message ID: ${info.messageId}</p>
+      <p><strong>Check your email (including spam folder)</strong></p>
+      <hr>
+      <p>EMAIL_USER: ${process.env.EMAIL_USER ? '✓ Set' : '✗ Not Set'}</p>
+      <p>EMAIL_PASS: ${process.env.EMAIL_PASS ? '✓ Set (' + process.env.EMAIL_PASS.length + ' chars)' : '✗ Not Set'}</p>
+    `);
+  } catch (error) {
+    res.status(500).send(`
+      <h1>Email Test Failed</h1>
+      <p> Error: ${error.message}</p>
+      <pre>${error.stack}</pre>
+      <hr>
+      <p>EMAIL_USER: ${process.env.EMAIL_USER || 'NOT SET'}</p>
+      <p>EMAIL_PASS: ${process.env.EMAIL_PASS ? 'Set (' + process.env.EMAIL_PASS.length + ' chars)' : 'NOT SET'}</p>
+    `);
+  }
+});
+
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
   next(createError(404));
