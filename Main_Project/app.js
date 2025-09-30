@@ -51,16 +51,21 @@ app.get('/health', (req, res) => {
   res.status(200).json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
-// CSV Import endpoint - visit this URL once to import product data
+// CSV Import endpoint 
 app.get('/import-products', async (req, res) => {
   try {
-    const { importCSV } = require('./import-csv-to-railway');
+    const { fastImport } = require('./fast-import');
+    
+    console.log('Import endpoint called - starting fast import...');
+    
+    // Run import and wait for completion
+    await fastImport();
     
     res.send(`
       <!DOCTYPE html>
       <html>
       <head>
-        <title>Importing Products...</title>
+        <title>Import Complete!</title>
         <style>
           body { 
             font-family: Arial, sans-serif; 
@@ -68,61 +73,43 @@ app.get('/import-products', async (req, res) => {
             margin: 50px auto; 
             padding: 20px;
           }
-          .loading { 
-            background: #2196F3; 
+          .success { 
+            background: #4CAF50; 
             color: white; 
             padding: 20px; 
             border-radius: 5px;
             text-align: center;
           }
-          .spinner {
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #3498db;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-            margin: 20px auto;
-          }
-          @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-          }
         </style>
       </head>
       <body>
-        <div class="loading">
-          <h1>🚀 Importing Product Data...</h1>
-          <div class="spinner"></div>
-          <p>This may take 1-2 minutes. Please wait...</p>
-          <p>The page will automatically refresh when complete.</p>
+        <div class="success">
+          <h1>Import Complete!</h1>
+          <p>All products have been imported successfully!</p>
+          <p><a href="/" style="color: white; text-decoration: underline;">Back to Home</a></p>
         </div>
-        <script>
-          setTimeout(() => location.reload(), 3000);
-        </script>
       </body>
       </html>
     `);
     
-    // Run import in background
-    importCSV().catch(err => console.error('Import error:', err));
-    
   } catch (error) {
+    console.error('Import error:', error);
     res.status(500).send(`
       <!DOCTYPE html>
       <html>
       <head><title>Import Error</title></head>
       <body style="font-family: Arial; max-width: 800px; margin: 50px auto; padding: 20px;">
-        <h1 style="color: #f44336;">❌ Import Failed</h1>
+        <h1 style="color: #f44336;">Import Failed</h1>
         <p>Error: ${error.message}</p>
-        <a href="/" style="color: #2196F3;">← Back to Home</a>
+        <p>Check Railway logs for details.</p>
+        <a href="/" style="color: #2196F3;">Back to Home</a>
       </body>
       </html>
     `);
   }
 });
 
-// Database setup endpoint - visit this URL once to create all tables
+// Database setup endpoint 
 app.get('/setup-database', async (req, res) => {
   try {
     // Create users table
