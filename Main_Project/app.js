@@ -857,8 +857,26 @@ app.get('/api/saved-recipes/:id', authMiddleware, (req, res) => {
   });
 });
 
-// Test email endpoint (for debugging)
-app.get('/test-email', async (req, res) => {
+// Check email credentials (no actual sending)
+app.get('/check-email-config', (req, res) => {
+  res.send(`
+    <h1>Email Configuration Check</h1>
+    <p><strong>EMAIL_USER:</strong> ${process.env.EMAIL_USER || '❌ NOT SET'}</p>
+    <p><strong>EMAIL_PASS:</strong> ${process.env.EMAIL_PASS ? '✓ Set (' + process.env.EMAIL_PASS.length + ' characters)' : '❌ NOT SET'}</p>
+    <hr>
+    <p><strong>EMAIL_PASS (first 4 chars):</strong> ${process.env.EMAIL_PASS ? process.env.EMAIL_PASS.substring(0, 4) + '...' : 'N/A'}</p>
+    <p><strong>EMAIL_PASS (last 4 chars):</strong> ${process.env.EMAIL_PASS ? '...' + process.env.EMAIL_PASS.substring(process.env.EMAIL_PASS.length - 4) : 'N/A'}</p>
+    <hr>
+    <h2>Expected:</h2>
+    <p>EMAIL_USER: rafid200220@gmail.com</p>
+    <p>EMAIL_PASS: 16 characters (Gmail App Password without spaces)</p>
+    <hr>
+    <a href="/test-email-quick">Test Email (Quick)</a>
+  `);
+});
+
+// Test email endpoint with timeout (for debugging)
+app.get('/test-email-quick', async (req, res) => {
   const nodemailer = require('nodemailer');
   
   const transporter = nodemailer.createTransport({
@@ -866,38 +884,59 @@ app.get('/test-email', async (req, res) => {
     auth: {
       user: process.env.EMAIL_USER,
       pass: process.env.EMAIL_PASS
-    }
+    },
+    connectionTimeout: 5000,
+    greetingTimeout: 5000,
+    socketTimeout: 5000
+  });
+
+  // Set a response timeout
+  const timeoutPromise = new Promise((_, reject) => {
+    setTimeout(() => reject(new Error('Request timeout after 8 seconds')), 8000);
   });
 
   try {
-    // Verify connection
-    await transporter.verify();
-    
-    const info = await transporter.sendMail({
-      from: `"GroceryGuru Test" <${process.env.EMAIL_USER}>`,
-      to: process.env.EMAIL_USER,
-      subject: 'Test Email from GroceryGuru',
-      html: '<h1>Email is working!</h1><p>If you see this, your email configuration is correct.</p>'
-    });
+    const sendEmailPromise = (async () => {
+      await transporter.verify();
+      
+      const info = await transporter.sendMail({
+        from: `"GroceryGuru Test" <${process.env.EMAIL_USER}>`,
+        to: process.env.EMAIL_USER,
+        subject: 'Test Email from GroceryGuru',
+        html: '<h1>Email is working!</h1><p>If you see this, your email configuration is correct.</p>'
+      });
+      return info;
+    })();
+
+    const info = await Promise.race([sendEmailPromise, timeoutPromise]);
 
     res.send(`
-      <h1>Email Test Results</h1>
-      <p> Connection verified</p>
-      <p> Test email sent to: ${process.env.EMAIL_USER}</p>
+      <h1>✓ Email Test SUCCESS!</h1>
+      <p>✓ Connection verified</p>
+      <p>✓ Test email sent to: ${process.env.EMAIL_USER}</p>
       <p>Message ID: ${info.messageId}</p>
-      <p><strong>Check your email (including spam folder)</strong></p>
+      <p><strong>Check your email inbox and spam folder!</strong></p>
       <hr>
-      <p>EMAIL_USER: ${process.env.EMAIL_USER ? '✓ Set' : '✗ Not Set'}</p>
-      <p>EMAIL_PASS: ${process.env.EMAIL_PASS ? '✓ Set (' + process.env.EMAIL_PASS.length + ' chars)' : '✗ Not Set'}</p>
+      <a href="/check-email-config">Check Config</a>
     `);
   } catch (error) {
     res.status(500).send(`
-      <h1>Email Test Failed</h1>
-      <p> Error: ${error.message}</p>
-      <pre>${error.stack}</pre>
+      <h1>✗ Email Test FAILED</h1>
+      <p><strong>Error:</strong> ${error.message}</p>
+      <hr>
+      <h2>Common Issues:</h2>
+      <ul>
+        <li><strong>Invalid credentials (535):</strong> App Password is wrong - regenerate it</li>
+        <li><strong>Timeout:</strong> Gmail might be blocking Railway's IP or 2FA not enabled</li>
+        <li><strong>Authentication failed:</strong> Check App Password has no spaces</li>
+      </ul>
       <hr>
       <p>EMAIL_USER: ${process.env.EMAIL_USER || 'NOT SET'}</p>
       <p>EMAIL_PASS: ${process.env.EMAIL_PASS ? 'Set (' + process.env.EMAIL_PASS.length + ' chars)' : 'NOT SET'}</p>
+      <hr>
+      <a href="/check-email-config">Check Config</a>
+      <hr>
+      <pre>${error.stack}</pre>
     `);
   }
 });
