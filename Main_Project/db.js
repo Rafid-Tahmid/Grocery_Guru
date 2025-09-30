@@ -4,6 +4,7 @@ const mysql = require('mysql2');
 // Create regular connection for callback-style queries
 const connection = mysql.createConnection({
   host: process.env.DB_HOST || 'localhost',
+  port: process.env.MYSQL_PORT || 3306,
   user: process.env.DB_USER || 'appuser',
   password: process.env.DB_PASSWORD || 'securepassword',
   database: process.env.DB_NAME || 'wdc'
