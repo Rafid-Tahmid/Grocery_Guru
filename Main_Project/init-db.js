@@ -73,17 +73,20 @@ async function initializeDatabase() {
 
     // Read SQL file
     const sqlFile = path.join(__dirname, 'wdc.sql');
+    log(` Reading SQL schema from: ${sqlFile}`, colors.blue);
     let sql = fs.readFileSync(sqlFile, 'utf8');
+    log(` Successfully read wdc.sql (${sql.length} characters)`, colors.green);
 
     // Remove commands that require privileges (for production)
     // Remove database creation and user management (hosting provider handles this)
+    log(' Stripping out privileged commands for production...', colors.yellow);
     sql = sql.replace(/CREATE DATABASE IF NOT EXISTS wdc;/gi, '');
     sql = sql.replace(/CREATE USER IF NOT EXISTS.*?;/gi, '');
     sql = sql.replace(/GRANT ALL PRIVILEGES.*?;/gi, '');
     sql = sql.replace(/FLUSH PRIVILEGES;/gi, '');
     sql = sql.replace(/USE wdc;/gi, '');
 
-    log(' Executing SQL schema...', colors.yellow);
+    log('  Executing SQL schema from wdc.sql...', colors.yellow);
 
     // Split by statements and execute
     const statements = sql
@@ -91,29 +94,54 @@ async function initializeDatabase() {
       .map(s => s.trim())
       .filter(s => s.length > 0);
 
+    log(` Found ${statements.length} SQL statements to execute`, colors.blue);
+
+    let tablesCreated = 0;
+    let tablesAlreadyExist = 0;
+
     for (const statement of statements) {
       try {
+        // Extract table name if this is a CREATE TABLE statement
+        const createTableMatch = statement.match(/CREATE TABLE\s+(\w+)/i);
+        if (createTableMatch) {
+          const tableName = createTableMatch[1];
+          log(`  → Creating table: ${tableName}`, colors.blue);
+        }
+        
         await connection.query(statement);
+        
+        if (createTableMatch) {
+          tablesCreated++;
+        }
       } catch (err) {
         // Ignore "table already exists" errors
-        if (!err.message.includes('already exists')) {
+        if (err.message.includes('already exists')) {
+          const tableName = err.message.match(/table '(\w+)'/i)?.[1] || 'unknown';
+          log(`  ℹ  Table already exists: ${tableName}`, colors.yellow);
+          tablesAlreadyExist++;
+        } else {
           throw err;
         }
       }
     }
+    
+    log(`\n Summary:`, colors.bold + colors.green);
+    log(`    Tables created: ${tablesCreated}`, colors.green);
+    log(`   ℹ  Tables already existed: ${tablesAlreadyExist}`, colors.yellow);
 
-    log(' Database schema initialized successfully!', colors.green);
+    log('\n Database schema from wdc.sql initialized successfully!', colors.green);
 
     // Verify tables were created
     const [tables] = await connection.query('SHOW TABLES');
-    log(`\n Created ${tables.length} tables:`, colors.blue);
+    log(`\n Total tables in database: ${tables.length}`, colors.bold + colors.blue);
     tables.forEach(table => {
       const tableName = Object.values(table)[0];
-      log(`   - ${tableName}`, colors.reset);
+      log(`    ${tableName}`, colors.green);
     });
 
     log('\n Database initialization complete!', colors.bold + colors.green);
-    log('You can now start your application with: npm start', colors.reset);
+    log(' Schema source: wdc.sql', colors.blue);
+    log(' You can now start your application with: npm start', colors.reset);
 
   } catch (error) {
     log('\n Database initialization failed:', colors.red);
