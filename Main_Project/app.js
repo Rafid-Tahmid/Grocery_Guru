@@ -46,6 +46,11 @@ app.use(session({
   }
 }));
 
+// Health check endpoint for deployment platforms
+app.get('/health', (req, res) => {
+  res.status(200).json({ status: 'ok', timestamp: new Date().toISOString() });
+});
+
 // Public routes
 app.use('/', indexRouter);
 app.use('/', authRouter);
