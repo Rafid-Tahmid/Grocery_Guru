@@ -1,16 +1,22 @@
 {
-  "name": "25s1_wdc_ug_groups_12",
+  "name": "grocery-guru",
   "version": "1.0.0",
-  "description": "Your group's shared repository for the WDC 2023 Web App Project.",
-  "main": "index.js",
+  "description": "A comprehensive meal planning and recipe management web application",
+  "main": "Main_Project/app.js",
+  "engines": {
+    "node": ">=14.0.0",
+    "npm": ">=6.0.0"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node Main_Project/setup.js",
+    "start": "node Main_Project/app.js",
+    "dev": "node Main_Project/setup.js",
     "server-only": "node Main_Project/app.js",
-    "refresh-ingredients": "node Main_Project/refresh-ingredients.js"
+    "refresh-ingredients": "node Main_Project/refresh-ingredients.js",
+    "init-db": "node Main_Project/init-db.js"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": ["meal-planning", "recipes", "grocery", "price-comparison"],
+  "author": "Grocery Guru Team",
   "license": "ISC",
   "dependencies": {
     "axios": "^1.9.0",

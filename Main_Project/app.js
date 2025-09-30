@@ -51,6 +51,237 @@ app.get('/health', (req, res) => {
   res.status(200).json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
+// Database setup endpoint - visit this URL once to create all tables
+app.get('/setup-database', async (req, res) => {
+  try {
+    // Create users table
+    await db.promise().query(`
+      CREATE TABLE IF NOT EXISTS users (
+        user_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+        password VARCHAR(64) NOT NULL,
+        first_name VARCHAR(64),
+        user_name VARCHAR(64),
+        last_name VARCHAR(64),
+        state VARCHAR(64),
+        postcode VARCHAR(64),
+        email_address VARCHAR(64) UNIQUE NOT NULL,
+        phone_number VARCHAR(64),
+        is_admin BOOLEAN DEFAULT FALSE
+      )
+    `);
+
+    // Create saved_recipes table
+    await db.promise().query(`
+      CREATE TABLE IF NOT EXISTS saved_recipes (
+        recipe_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+        user_id INT UNSIGNED,
+        external_id VARCHAR(20),
+        recipe_name VARCHAR(100) NOT NULL,
+        strTags TEXT,
+        recipe_category VARCHAR(50),
+        recipe_region VARCHAR(50),
+        recipe_photo TEXT,
+        directions TEXT,
+        directions_video TEXT,
+        date_saved TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        is_favorite BOOLEAN DEFAULT FALSE,
+        FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
+      )
+    `);
+
+    // Create recipe_ingredients table
+    await db.promise().query(`
+      CREATE TABLE IF NOT EXISTS recipe_ingredients (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        recipe_id INT UNSIGNED,
+        ingredient_name VARCHAR(200) NOT NULL,
+        measure VARCHAR(100),
+        FOREIGN KEY (recipe_id) REFERENCES saved_recipes(recipe_id) ON DELETE CASCADE
+      )
+    `);
+
+    // Create ingredients table
+    await db.promise().query(`
+      CREATE TABLE IF NOT EXISTS ingredients (
+        ingredient_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+        store ENUM('Coles', 'Woolworths') NOT NULL,
+        product_name VARCHAR(200) NOT NULL,
+        product_price DECIMAL(8,2) NOT NULL,
+        product_image_link TEXT,
+        product_category VARCHAR(100),
+        last_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+        INDEX idx_store (store),
+        INDEX idx_category (product_category),
+        INDEX idx_product_name (product_name)
+      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+    `);
+
+    // Create meal_plan table
+    await db.promise().query(`
+      CREATE TABLE IF NOT EXISTS meal_plan (
+        plan_id INT AUTO_INCREMENT PRIMARY KEY,
+        user_id INT UNSIGNED,
+        recipe_id INT UNSIGNED,
+        external_id VARCHAR(20),
+        day_of_week ENUM('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday') NOT NULL,
+        meal_type ENUM('Breakfast', 'Lunch', 'Dinner') NOT NULL,
+        plan_group VARCHAR(100),
+        FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
+        FOREIGN KEY (recipe_id) REFERENCES saved_recipes(recipe_id) ON DELETE CASCADE
+      )
+    `);
+
+    // Create reset_tokens table
+    await db.promise().query(`
+      CREATE TABLE IF NOT EXISTS reset_tokens (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        user_id INT UNSIGNED NOT NULL,
+        token VARCHAR(255) NOT NULL UNIQUE,
+        expires_at TIMESTAMP NOT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        used BOOLEAN DEFAULT FALSE,
+        FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
+      )
+    `);
+
+    // Get list of tables to confirm
+    const [tables] = await db.promise().query('SHOW TABLES');
+
+    res.send(`
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <title>Database Setup Complete</title>
+        <style>
+          body { 
+            font-family: Arial, sans-serif; 
+            max-width: 800px; 
+            margin: 50px auto; 
+            padding: 20px;
+            background: #f5f5f5;
+          }
+          .success { 
+            background: #4CAF50; 
+            color: white; 
+            padding: 20px; 
+            border-radius: 5px;
+            margin-bottom: 20px;
+          }
+          .tables {
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+          }
+          ul { list-style: none; padding: 0; }
+          li { 
+            padding: 10px; 
+            border-bottom: 1px solid #eee;
+            display: flex;
+            align-items: center;
+          }
+          li:before {
+            content: "✓";
+            color: #4CAF50;
+            font-weight: bold;
+            margin-right: 10px;
+          }
+          .next-steps {
+            background: #2196F3;
+            color: white;
+            padding: 20px;
+            border-radius: 5px;
+            margin-top: 20px;
+          }
+          a {
+            color: white;
+            text-decoration: underline;
+          }
+        </style>
+      </head>
+      <body>
+        <div class="success">
+          <h1>🎉 Database Setup Successful!</h1>
+          <p>All database tables have been created successfully.</p>
+        </div>
+        
+        <div class="tables">
+          <h2>Created Tables (${tables.length}):</h2>
+          <ul>
+            ${tables.map(t => `<li>${Object.values(t)[0]}</li>`).join('')}
+          </ul>
+        </div>
+
+        <div class="next-steps">
+          <h2>✅ What's Next?</h2>
+          <ol>
+            <li><strong>Go to your homepage:</strong> <a href="/">Click here to visit your app</a></li>
+            <li><strong>Create an account:</strong> Register as a new user</li>
+            <li><strong>Start using Grocery Guru!</strong> Search for recipes, save favorites, plan meals</li>
+          </ol>
+          <p><strong>Note:</strong> This setup endpoint is now complete. Your database is ready to use!</p>
+        </div>
+      </body>
+      </html>
+    `);
+
+  } catch (error) {
+    res.status(500).send(`
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <title>Database Setup Error</title>
+        <style>
+          body { 
+            font-family: Arial, sans-serif; 
+            max-width: 800px; 
+            margin: 50px auto; 
+            padding: 20px;
+          }
+          .error { 
+            background: #f44336; 
+            color: white; 
+            padding: 20px; 
+            border-radius: 5px;
+          }
+          .details {
+            background: #fff3cd;
+            color: #856404;
+            padding: 20px;
+            border-radius: 5px;
+            margin-top: 20px;
+          }
+          pre {
+            background: #f5f5f5;
+            padding: 10px;
+            border-radius: 3px;
+            overflow-x: auto;
+          }
+        </style>
+      </head>
+      <body>
+        <div class="error">
+          <h1>❌ Database Setup Failed</h1>
+          <p>There was an error creating the database tables.</p>
+        </div>
+        
+        <div class="details">
+          <h2>Error Details:</h2>
+          <pre>${error.message}</pre>
+          
+          <h3>Common Solutions:</h3>
+          <ul>
+            <li>Check that your environment variables are set correctly (DB_HOST, DB_USER, DB_PASSWORD, DB_NAME)</li>
+            <li>Verify the MySQL database is running in Railway</li>
+            <li>Check Railway deployment logs for database connection errors</li>
+          </ul>
+        </div>
+      </body>
+      </html>
+    `);
+  }
+});
+
 // Public routes
 app.use('/', indexRouter);
 app.use('/', authRouter);

@@ -1,0 +1,28 @@
+# Copy these variables into Railway's Variables tab
+# Get DB values from your MySQL service in Railway
+
+# ===== DATABASE CONFIGURATION =====
+# Click on your MySQL service to get these values:
+DB_HOST=${{MySQL.MYSQL_URL}}
+DB_USER=${{MySQL.MYSQL_USER}}
+DB_PASSWORD=${{MySQL.MYSQL_PASSWORD}}
+DB_NAME=${{MySQL.MYSQL_DATABASE}}
+
+# Or if you prefer direct values (copy from MySQL service):
+# DB_HOST=containers-us-west-xxx.railway.app
+# DB_USER=root
+# DB_PASSWORD=<from MySQL service>
+# DB_NAME=railway
+
+# ===== SECURITY =====
+# Generate this by running: openssl rand -base64 32
+SESSION_SECRET=<GENERATE_A_RANDOM_STRING_HERE>
+
+# ===== EMAIL CONFIGURATION =====
+# Get Gmail app password from: https://myaccount.google.com/apppasswords
+EMAIL_USER=your-email@gmail.com
+EMAIL_PASS=<your-16-char-app-password>
+
+# ===== APPLICATION SETTINGS =====
+NODE_ENV=production
+PORT=8080
