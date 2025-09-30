@@ -13,7 +13,8 @@
     "dev": "node Main_Project/setup.js",
     "server-only": "node Main_Project/app.js",
     "refresh-ingredients": "node Main_Project/refresh-ingredients.js",
-    "init-db": "node Main_Project/init-db.js"
+    "init-db": "node Main_Project/init-db.js",
+    "import-csv": "node Main_Project/import-csv-to-railway.js"
   },
   "keywords": ["meal-planning", "recipes", "grocery", "price-comparison"],
   "author": "Grocery Guru Team",
