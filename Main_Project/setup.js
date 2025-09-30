@@ -194,6 +194,16 @@ async function startServer() {
 
 async function main() {
     try {
+        // Check if we're in production (Railway)
+        if (process.env.RAILWAY_ENVIRONMENT || process.env.NODE_ENV === 'production') {
+            log('⚠️  This script is for local development only.', colors.red);
+            log('In production on Railway:', colors.yellow);
+            log('  1. Run "npm run init-db" to set up tables', colors.yellow);
+            log('  2. Or visit /setup-database endpoint in your browser', colors.yellow);
+            log('  3. Then "npm start" will run the app', colors.yellow);
+            process.exit(1);
+        }
+
         log('Starting WDC Application Setup...', colors.bold + colors.blue);
 
         await startMySQL();

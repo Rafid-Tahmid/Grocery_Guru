@@ -829,8 +829,34 @@ app.use((err, req, res, next) => {
 });
 
 const PORT = process.env.PORT || 8080;
-app.listen(PORT, () => {
-  // Server started successfully - no console logging needed
+const server = app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });
+
+// Graceful shutdown handler for Railway
+const gracefulShutdown = () => {
+  console.log('Received shutdown signal, closing server gracefully...');
+  server.close(() => {
+    console.log('Server closed');
+    db.end((err) => {
+      if (err) {
+        console.error('Error closing database connection:', err);
+        process.exit(1);
+      }
+      console.log('Database connection closed');
+      process.exit(0);
+    });
+  });
+
+  // Force shutdown after 10 seconds
+  setTimeout(() => {
+    console.error('Forcing shutdown after timeout');
+    process.exit(1);
+  }, 10000);
+};
+
+// Listen for termination signals
+process.on('SIGTERM', gracefulShutdown);
+process.on('SIGINT', gracefulShutdown);
 
 module.exports = app;

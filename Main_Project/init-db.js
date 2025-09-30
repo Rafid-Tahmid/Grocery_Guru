@@ -35,7 +35,14 @@ async function initializeDatabase() {
   let connection;
 
   try {
-    log(' Starting database initialization...', colors.blue);
+    log('🚀 Starting database initialization...', colors.blue);
+    
+    // Validate environment variables
+    if (!process.env.DB_HOST || !process.env.DB_USER || !process.env.DB_PASSWORD || !process.env.DB_NAME) {
+      log('❌ Missing required environment variables!', colors.red);
+      log('Please set: DB_HOST, DB_USER, DB_PASSWORD, DB_NAME', colors.yellow);
+      process.exit(1);
+    }
 
     // Create connection
     connection = await mysql.createConnection({
@@ -43,10 +50,11 @@ async function initializeDatabase() {
       user: process.env.DB_USER,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
-      multipleStatements: true
+      multipleStatements: true,
+      connectTimeout: 10000
     });
 
-    log(' Connected to database successfully', colors.green);
+    log('✅ Connected to database successfully', colors.green);
 
     // Read SQL file
     const sqlFile = path.join(__dirname, 'wdc.sql');

@@ -44,6 +44,13 @@ async function checkDatabaseExists() {
 
 async function refreshIngredients() {
     try {
+        // Check if we're in production (Railway)
+        if (process.env.RAILWAY_ENVIRONMENT || process.env.NODE_ENV === 'production') {
+            log('⚠️  This script is for local development only. In production, use the /setup-database endpoint.', colors.red);
+            log('Visit your-app-url.railway.app/setup-database to initialize tables.', colors.yellow);
+            process.exit(1);
+        }
+
         log('Refreshing ingredients data while preserving all user data...', colors.bold + colors.blue);
 
         // Start MySQL if not running
@@ -55,7 +62,7 @@ async function refreshIngredients() {
             });
             log('MySQL service started', colors.green);
         } catch (error) {
-            log('⚠️  MySQL might already be running', colors.yellow);
+            log('MySQL might already be running', colors.yellow);
         }
 
         // Check if database exists
