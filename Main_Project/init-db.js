@@ -35,26 +35,41 @@ async function initializeDatabase() {
   let connection;
 
   try {
-    log('🚀 Starting database initialization...', colors.blue);
+    log('Starting database initialization...', colors.blue);
+    
+    // Check for Railway variables or custom variables
+    const host = process.env.MYSQLHOST || process.env.DB_HOST;
+    const user = process.env.MYSQLUSER || process.env.DB_USER;
+    const password = process.env.MYSQLPASSWORD || process.env.DB_PASSWORD;
+    const database = process.env.MYSQLDATABASE || process.env.DB_NAME;
+    const port = process.env.MYSQLPORT || process.env.DB_PORT || 3306;
     
     // Validate environment variables
-    if (!process.env.DB_HOST || !process.env.DB_USER || !process.env.DB_PASSWORD || !process.env.DB_NAME) {
-      log('❌ Missing required environment variables!', colors.red);
-      log('Please set: DB_HOST, DB_USER, DB_PASSWORD, DB_NAME', colors.yellow);
+    if (!host || !user || !password || !database) {
+      log(' Missing required environment variables!', colors.red);
+      log('Railway variables checked: MYSQLHOST, MYSQLUSER, MYSQLPASSWORD, MYSQLDATABASE', colors.yellow);
+      log('Or set custom: DB_HOST, DB_USER, DB_PASSWORD, DB_NAME', colors.yellow);
+      log('\nCurrent values:', colors.yellow);
+      log(`  MYSQLHOST: ${process.env.MYSQLHOST || '(not set)'}`, colors.yellow);
+      log(`  MYSQLUSER: ${process.env.MYSQLUSER || '(not set)'}`, colors.yellow);
+      log(`  MYSQLDATABASE: ${process.env.MYSQLDATABASE || '(not set)'}`, colors.yellow);
       process.exit(1);
     }
 
+    log(`Connecting to database at ${host}:${port}...`, colors.blue);
+
     // Create connection
     connection = await mysql.createConnection({
-      host: process.env.DB_HOST,
-      user: process.env.DB_USER,
-      password: process.env.DB_PASSWORD,
-      database: process.env.DB_NAME,
+      host,
+      port,
+      user,
+      password,
+      database,
       multipleStatements: true,
       connectTimeout: 10000
     });
 
-    log('✅ Connected to database successfully', colors.green);
+    log('Connected to database successfully', colors.green);
 
     // Read SQL file
     const sqlFile = path.join(__dirname, 'wdc.sql');
