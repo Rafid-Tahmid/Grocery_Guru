@@ -1,14 +1,19 @@
 require('dotenv').config();
 const mysql = require('mysql2');
 
+// Use connection URL if available, otherwise use individual params
+const connectionConfig = process.env.MYSQL_URL 
+  ? process.env.MYSQL_URL
+  : {
+      host: process.env.DB_HOST || 'ballast.proxy.rlwy.net',
+      port: process.env.MYSQL_PORT || 12216,
+      user: process.env.DB_USER || 'root',
+      password: process.env.DB_PASSWORD || 'eBcOHwdXomkahLYqBRsEBXyKqdn!mwMk',
+      database: process.env.DB_NAME || 'railway'
+    };
+
 // Create regular connection for callback-style queries
-const connection = mysql.createConnection({
-  host: process.env.DB_HOST || 'ballast.proxy.rlwy.net',
-  port: process.env.MYSQL_PORT || 12216,
-  user: process.env.DB_USER || 'root',
-  password: process.env.DB_PASSWORD || 'eBcOHwdXomkahLYqBRsEBXyKqdn!mwMk',
-  database: process.env.DB_NAME || 'railway'
-});
+const connection = mysql.createConnection(connectionConfig);
 
 // Test the connection
 connection.connect((err) => {
