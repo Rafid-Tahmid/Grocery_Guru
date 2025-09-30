@@ -390,24 +390,7 @@ function saveRecipeIngredients(recipeId, ingredients, callback) {
   );
 }
 
-// Protected profile route: returns user_name from DB
-app.get('/profile', authMiddleware, (req, res) => {
-  const userId = req.user.id;
-  db.query(
-    'SELECT first_name, user_name FROM users WHERE user_id = ?',
-    [userId],
-    (err, results) => {
-      if (err) {
-        return res.status(500).json({ message: 'Failed to retrieve profile', error: err.message });
-      }
-      if (results.length === 0) {
-        return res.status(404).json({ message: 'User not found' });
-      }
-      const nameToShow = results[0].first_name || results[0].user_name;
-      return res.json({ first_name: nameToShow });
-    }
-  );
-});
+// Profile endpoint is handled by auth router
 
 // Save recipe from external API
 app.post('/api/save-recipe', authMiddleware, (req, res) => {
