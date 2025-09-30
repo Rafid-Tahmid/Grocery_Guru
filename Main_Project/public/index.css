@@ -3963,3 +3963,432 @@ footer {
 .profile-container .fa-regular.fa-user {
   font-size: 20px !important;
 }
+
+/* ========================================
+   COMPREHENSIVE MOBILE OPTIMIZATION
+   ======================================== */
+
+/* Mobile Navigation Toggle */
+.mobile-menu-toggle {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: #129060;
+  cursor: pointer;
+  padding: 8px;
+  margin-left: auto;
+  z-index: 1001;
+}
+
+.mobile-menu-toggle:focus {
+  outline: 2px solid #129060;
+  outline-offset: 2px;
+}
+
+[data-theme="dark"] .mobile-menu-toggle {
+  color: #fff;
+}
+
+/* Mobile Optimizations - Tablet and Below */
+@media (max-width: 900px) {
+  /* Header adjustments */
+  header {
+    padding: 10px 20px;
+  }
+
+  .header-content {
+    grid-template-columns: auto 1fr auto;
+    padding: 12px 20px;
+    width: 95%;
+  }
+
+  .logo {
+    font-size: 24px;
+  }
+
+  /* Show mobile menu toggle */
+  .mobile-menu-toggle {
+    display: block;
+    grid-column: 2;
+    justify-self: end;
+    margin-right: 10px;
+  }
+
+  /* Hide desktop navbar */
+  .navbar {
+    display: none;
+    position: fixed;
+    top: 70px;
+    left: 0;
+    right: 0;
+    background: rgba(255, 255, 255, 0.98);
+    flex-direction: column;
+    padding: 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    z-index: 999;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+  }
+
+  [data-theme="dark"] .navbar {
+    background: rgba(30, 30, 30, 0.98);
+  }
+
+  .navbar.active {
+    display: flex;
+    max-height: 500px;
+  }
+
+  .navbar a {
+    padding: 15px 20px;
+    width: 100%;
+    text-align: left;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    font-size: 16px;
+  }
+
+  [data-theme="dark"] .navbar a {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .navbar a:last-child {
+    border-bottom: none;
+  }
+
+  .searchAndProfile {
+    grid-column: 3;
+    gap: 10px;
+  }
+
+  /* Hero section */
+  .hero {
+    padding: 100px 20px 60px;
+    min-height: auto;
+  }
+
+  .hero-content h1 {
+    font-size: 32px;
+    line-height: 1.2;
+  }
+
+  .hero-content p {
+    font-size: 16px;
+  }
+
+  .cta-buttons {
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+  }
+
+  .cta-button {
+    width: 100%;
+    padding: 14px 24px;
+    font-size: 16px;
+  }
+
+  /* Features section */
+  .features-grid {
+    grid-template-columns: 1fr;
+    gap: 30px;
+    padding: 0 20px;
+  }
+
+  .feature-card {
+    padding: 30px 20px;
+  }
+
+  /* Recipe cards */
+  .recipe-card {
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+  }
+
+  /* Search modal */
+  .search-modal-content {
+    width: 95%;
+    margin: 20px auto;
+    padding: 30px 20px;
+  }
+
+  .search-input {
+    font-size: 16px;
+  }
+
+  /* Forms */
+  input,
+  textarea,
+  select,
+  button {
+    font-size: 16px;
+    min-height: 44px;
+  }
+
+  /* Tables */
+  table {
+    font-size: 14px;
+  }
+
+  th,
+  td {
+    padding: 10px 8px;
+  }
+}
+
+/* Mobile Optimizations - Phone */
+@media (max-width: 600px) {
+  /* Header */
+  .header-content {
+    padding: 10px 15px;
+    width: 98%;
+    border-radius: 25px;
+  }
+
+  .logo {
+    font-size: 20px;
+  }
+
+  .searchAndProfile {
+    gap: 8px;
+  }
+
+  .search-icon-btn,
+  .profile-container i {
+    font-size: 18px;
+    padding: 8px;
+  }
+
+  /* Hero */
+  .hero {
+    padding: 90px 15px 50px;
+  }
+
+  .hero-content h1 {
+    font-size: 28px;
+  }
+
+  .hero-content p {
+    font-size: 14px;
+  }
+
+  /* Sections */
+  section {
+    padding: 40px 15px;
+  }
+
+  .section-title {
+    font-size: 24px;
+    margin-bottom: 15px;
+  }
+
+  .section-subtitle {
+    font-size: 14px;
+  }
+
+  /* Cards */
+  .feature-card h3 {
+    font-size: 20px;
+  }
+
+  .feature-card p {
+    font-size: 14px;
+  }
+
+  /* Buttons */
+  button,
+  .btn,
+  .cta-button {
+    padding: 12px 20px;
+    font-size: 14px;
+    min-height: 44px;
+    touch-action: manipulation;
+  }
+
+  /* Footer */
+  footer {
+    padding: 30px 15px 0;
+  }
+
+  .footer-content {
+    grid-template-columns: 1fr;
+    gap: 25px;
+  }
+
+  .footer-heading {
+    font-size: 18px;
+  }
+
+  .footer-text,
+  .footer-links a {
+    font-size: 14px;
+  }
+
+  /* Modals */
+  .modal-content,
+  .search-modal-content {
+    width: 95%;
+    padding: 20px 15px;
+    margin: 10px auto;
+  }
+
+  /* Recipe details */
+  .recipe-details {
+    padding: 20px 15px;
+  }
+
+  .recipe-header h1 {
+    font-size: 24px;
+  }
+
+  .recipe-info-boxes {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  /* Meal planner */
+  .meal-planner-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .day-column {
+    min-width: auto;
+  }
+
+  /* Profile */
+  .profile-form {
+    padding: 20px 15px;
+  }
+
+  /* Admin panel */
+  .admin-content {
+    padding: 20px 15px;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Small Phone Optimizations */
+@media (max-width: 375px) {
+  .header-content {
+    padding: 8px 10px;
+  }
+
+  .logo {
+    font-size: 18px;
+  }
+
+  .hero-content h1 {
+    font-size: 24px;
+  }
+
+  .section-title {
+    font-size: 22px;
+  }
+
+  .cta-button {
+    padding: 12px 18px;
+    font-size: 14px;
+  }
+}
+
+/* Touch device optimizations */
+@media (hover: none) and (pointer: coarse) {
+  /* Larger touch targets */
+  a,
+  button,
+  input,
+  select,
+  textarea {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* Remove hover effects */
+  .feature-card:hover,
+  .recipe-card:hover,
+  .btn:hover {
+    transform: none;
+  }
+
+  /* Better tap feedback */
+  button:active,
+  .btn:active,
+  a:active {
+    opacity: 0.7;
+  }
+
+  /* Prevent double-tap zoom */
+  * {
+    touch-action: manipulation;
+  }
+}
+
+/* Landscape phone optimizations */
+@media (max-width: 900px) and (orientation: landscape) {
+  .hero {
+    padding: 80px 20px 40px;
+    min-height: auto;
+  }
+
+  .hero-content h1 {
+    font-size: 28px;
+  }
+
+  .features-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* High DPI screens */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  /* Crisp images */
+  img {
+    image-rendering: -webkit-optimize-contrast;
+  }
+}
+
+/* Reduce motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Dark mode mobile optimizations */
+@media (max-width: 600px) {
+  [data-theme="dark"] .header-content {
+    background: rgba(30, 30, 30, 0.95);
+  }
+
+  [data-theme="dark"] .navbar {
+    background: rgba(20, 20, 20, 0.98);
+  }
+}
+
+/* Print styles */
+@media print {
+  .header,
+  .navbar,
+  .mobile-menu-toggle,
+  .searchAndProfile,
+  footer,
+  .cta-buttons,
+  button {
+    display: none !important;
+  }
+
+  body {
+    font-size: 12pt;
+  }
+
+  .recipe-details {
+    page-break-inside: avoid;
+  }
+}

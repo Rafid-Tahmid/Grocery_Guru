@@ -1,5 +1,49 @@
 // Meal Planner JavaScript Functionality
 
+// Mobile Menu Toggle
+document.addEventListener('DOMContentLoaded', function() {
+  const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
+  const navbar = document.querySelector('.navbar');
+  
+  if (mobileMenuToggle && navbar) {
+    mobileMenuToggle.addEventListener('click', function() {
+      navbar.classList.toggle('active');
+      const isExpanded = navbar.classList.contains('active');
+      this.setAttribute('aria-expanded', isExpanded);
+      
+      const icon = this.querySelector('i');
+      if (icon) {
+        icon.classList.toggle('fa-bars');
+        icon.classList.toggle('fa-times');
+      }
+    });
+
+    document.addEventListener('click', function(event) {
+      if (!event.target.closest('.header-content')) {
+        navbar.classList.remove('active');
+        mobileMenuToggle.setAttribute('aria-expanded', 'false');
+        const icon = mobileMenuToggle.querySelector('i');
+        if (icon) {
+          icon.classList.remove('fa-times');
+          icon.classList.add('fa-bars');
+        }
+      }
+    });
+
+    navbar.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', function() {
+        navbar.classList.remove('active');
+        mobileMenuToggle.setAttribute('aria-expanded', 'false');
+        const icon = mobileMenuToggle.querySelector('i');
+        if (icon) {
+          icon.classList.remove('fa-times');
+          icon.classList.add('fa-bars');
+        }
+      });
+    });
+  }
+});
+
 document.addEventListener("DOMContentLoaded", function () {
   // Initialize variables
   let currentMealSlot = null;
