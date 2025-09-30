@@ -261,7 +261,7 @@ app.get('/setup-database', async (req, res) => {
       </head>
       <body>
         <div class="error">
-          <h1>❌ Database Setup Failed</h1>
+          <h1> Database Setup Failed</h1>
           <p>There was an error creating the database tables.</p>
         </div>
         

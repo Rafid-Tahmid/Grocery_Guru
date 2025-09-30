@@ -44,16 +44,16 @@ async function checkDatabaseExists() {
 
 async function refreshIngredients() {
     try {
-        log('🔄 Refreshing ingredients data while preserving all user data...', colors.bold + colors.blue);
+        log('Refreshing ingredients data while preserving all user data...', colors.bold + colors.blue);
 
         // Start MySQL if not running
-        log('🔧 Starting MySQL service...', colors.blue);
+        log('Starting MySQL service...', colors.blue);
         try {
             await execPromise('sudo service mysql start');
             await new Promise((resolve) => {
                 setTimeout(resolve, 2000);
             });
-            log('✅ MySQL service started', colors.green);
+            log('MySQL service started', colors.green);
         } catch (error) {
             log('⚠️  MySQL might already be running', colors.yellow);
         }
@@ -61,17 +61,17 @@ async function refreshIngredients() {
         // Check if database exists
         const dbExists = await checkDatabaseExists();
         if (!dbExists) {
-            log('❌ Error: Database "wdc" doesn\'t exist. Please run "npm start" first to create the database.', colors.red);
+            log(' Error: Database "wdc" doesn\'t exist. Please run "npm start" first to create the database.', colors.red);
             process.exit(1);
         }
 
-        log('✅ Database exists, preserving all user data...', colors.green);
+        log('Database exists, preserving all user data...', colors.green);
 
         // Recreate ingredients table
-        log('🗑️  Dropping old ingredients table...', colors.yellow);
+        log('Dropping old ingredients table...', colors.yellow);
         await execPromise('mysql -e "USE wdc; DROP TABLE IF EXISTS ingredients;"');
 
-        log('🏗️  Creating new ingredients table...', colors.yellow);
+        log('Creating new ingredients table...', colors.yellow);
         await execPromise(`mysql -e "USE wdc; CREATE TABLE ingredients (
             ingredient_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
             store ENUM('Coles', 'Woolworths') NOT NULL,
@@ -85,19 +85,19 @@ async function refreshIngredients() {
             INDEX idx_product_name (product_name)
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;"`);
 
-        log('✅ Ingredients table recreated!', colors.green);
+        log('Ingredients table recreated!', colors.green);
 
         // Import fresh CSV data
-        log('📊 Importing fresh ingredient data from CSV...', colors.blue);
+        log('Importing fresh ingredient data from CSV...', colors.blue);
 
         const csvPath = path.join(__dirname, 'merged_store_data.csv');
         if (!fs.existsSync(csvPath)) {
-            log('❌ Error: CSV file "merged_store_data.csv" not found', colors.red);
+            log('Error: CSV file "merged_store_data.csv" not found', colors.red);
             process.exit(1);
         }
 
         // Clean CSV encoding
-        log('🔧 Ensuring CSV file has proper UTF-8 encoding...', colors.yellow);
+        log('Ensuring CSV file has proper UTF-8 encoding...', colors.yellow);
         try {
             await execPromise(`iconv -f utf-8 -t utf-8 -c "${csvPath}" > "${csvPath}.tmp" && mv "${csvPath}.tmp" "${csvPath}"`);
         } catch (error) {
@@ -116,16 +116,16 @@ async function refreshIngredients() {
         const totalCount = parseInt(totalResult.stdout.trim(), 10);
 
         if (validCount === 0) {
-            log('❌ Import failed - no valid products found', colors.red);
+            log(' Import failed - no valid products found', colors.red);
             process.exit(1);
         }
 
-        log('✅ CSV import completed successfully!', colors.green);
-        log(`📈 Imported ${totalCount} total products (${validCount} with valid prices)`, colors.bold);
-        log('🎉 Ingredients data refreshed! All user data, saved recipes, and meal plans preserved.', colors.green);
+        log(' CSV import completed successfully!', colors.green);
+        log(` Imported ${totalCount} total products (${validCount} with valid prices)`, colors.bold);
+        log(' Ingredients data refreshed! All user data, saved recipes, and meal plans preserved.', colors.green);
 
     } catch (error) {
-        log('❌ Refresh failed:', colors.red);
+        log(' Refresh failed:', colors.red);
         log(error.stderr || error.stdout || error.message, colors.red);
         process.exit(1);
     }

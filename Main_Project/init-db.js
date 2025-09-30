@@ -35,7 +35,7 @@ async function initializeDatabase() {
   let connection;
 
   try {
-    log('🚀 Starting database initialization...', colors.blue);
+    log(' Starting database initialization...', colors.blue);
 
     // Create connection
     connection = await mysql.createConnection({
@@ -46,7 +46,7 @@ async function initializeDatabase() {
       multipleStatements: true
     });
 
-    log('✅ Connected to database successfully', colors.green);
+    log(' Connected to database successfully', colors.green);
 
     // Read SQL file
     const sqlFile = path.join(__dirname, 'wdc.sql');
@@ -60,7 +60,7 @@ async function initializeDatabase() {
     sql = sql.replace(/FLUSH PRIVILEGES;/gi, '');
     sql = sql.replace(/USE wdc;/gi, '');
 
-    log('📋 Executing SQL schema...', colors.yellow);
+    log(' Executing SQL schema...', colors.yellow);
 
     // Split by statements and execute
     const statements = sql
@@ -79,21 +79,21 @@ async function initializeDatabase() {
       }
     }
 
-    log('✅ Database schema initialized successfully!', colors.green);
+    log(' Database schema initialized successfully!', colors.green);
 
     // Verify tables were created
     const [tables] = await connection.query('SHOW TABLES');
-    log(`\n📊 Created ${tables.length} tables:`, colors.blue);
+    log(`\n Created ${tables.length} tables:`, colors.blue);
     tables.forEach(table => {
       const tableName = Object.values(table)[0];
       log(`   - ${tableName}`, colors.reset);
     });
 
-    log('\n🎉 Database initialization complete!', colors.bold + colors.green);
+    log('\n Database initialization complete!', colors.bold + colors.green);
     log('You can now start your application with: npm start', colors.reset);
 
   } catch (error) {
-    log('\n❌ Database initialization failed:', colors.red);
+    log('\n Database initialization failed:', colors.red);
     log(error.message, colors.red);
     log('\nPlease check your environment variables:', colors.yellow);
     log('  DB_HOST=' + (process.env.DB_HOST || '(not set)'), colors.yellow);
