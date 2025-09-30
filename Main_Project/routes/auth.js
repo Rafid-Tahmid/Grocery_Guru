@@ -166,9 +166,10 @@ router.post('/api/forgot-password', async (req, res) => {
         // Send reset email
         const resetUrl = `${req.protocol}://${req.get('host')}/reset-password.html?token=${resetToken}`;
         const mailOptions = {
-          from: process.env.EMAIL_USER || 'noreply@groceryguru.com',
+          from: `"GroceryGuru" <${process.env.EMAIL_USER || 'noreply@groceryguru.com'}>`,
           to: email,
-          subject: 'Password Reset - GroceryGuru',
+          subject: '🔐 Password Reset - GroceryGuru',
+          replyTo: 'noreply@groceryguru.com',
           html: `
             <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
               <h2 style="color: #333;">Password Reset Request</h2>
