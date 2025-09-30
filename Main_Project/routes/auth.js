@@ -15,7 +15,11 @@ const transporter = nodemailer.createTransport({
   auth: {
     user: process.env.EMAIL_USER || 'your-email@gmail.com',
     pass: process.env.EMAIL_PASS || 'your-app-password'
-  }
+  },
+  // Add timeout to prevent hanging
+  connectionTimeout: 10000, // 10 seconds
+  greetingTimeout: 10000,
+  socketTimeout: 10000
 });
 
 // Single endpoint to handle both signup and login
@@ -121,6 +125,7 @@ router.post('/logout', (req, res) => {
 // Password reset request
 router.post('/api/forgot-password', async (req, res) => {
   const { email } = req.body;
+  console.log('🔐 Password reset requested for:', email);
 
   if (!email) {
     return res.status(400).json({ message: 'Email is required' });
@@ -131,16 +136,18 @@ router.post('/api/forgot-password', async (req, res) => {
     const userQuery = 'SELECT user_id, first_name FROM users WHERE email_address = ?';
     db.query(userQuery, [email], async (err, results) => {
       if (err) {
-        console.error('Database error:', err);
+        console.error('❌ Database error:', err);
         return res.status(500).json({ message: 'Database error' });
       }
 
       if (results.length === 0) {
+        console.log('⚠️ Email not found in database:', email);
         // Don't reveal if email exists or not for security
         return res.json({ message: 'If your email is registered, you will receive a reset link.' });
       }
 
       const user = results[0];
+      console.log('✅ User found:', user.user_id, user.first_name);
 
       // Generate reset token
       const resetToken = crypto.randomBytes(32).toString('hex');
@@ -150,9 +157,11 @@ router.post('/api/forgot-password', async (req, res) => {
       const tokenQuery = 'INSERT INTO reset_tokens (user_id, token, expires_at) VALUES (?, ?, ?)';
       db.query(tokenQuery, [user.user_id, resetToken, expiresAt], async (err) => {
         if (err) {
-          console.error('Token storage error:', err);
+          console.error('❌ Token storage error:', err);
           return res.status(500).json({ message: 'Error generating reset token' });
         }
+
+        console.log('✅ Reset token stored in database');
 
         // Send reset email
         const resetUrl = `${req.protocol}://${req.get('host')}/reset-password.html?token=${resetToken}`;
@@ -179,11 +188,17 @@ router.post('/api/forgot-password', async (req, res) => {
           `
         };
 
+        console.log('📧 Attempting to send email to:', email);
+        console.log('📧 Using EMAIL_USER:', process.env.EMAIL_USER ? 'Set ✓' : 'NOT SET ✗');
+        console.log('📧 Using EMAIL_PASS:', process.env.EMAIL_PASS ? 'Set ✓' : 'NOT SET ✗');
+
         try {
           await transporter.sendMail(mailOptions);
+          console.log('✅ Email sent successfully!');
           res.json({ message: 'If your email is registered, you will receive a reset link.' });
         } catch (error) {
-          console.error('Email sending error:', error);
+          console.error('❌ Email sending error:', error.message);
+          console.error('Full error:', error);
           // For testing: log the reset URL to console if email fails
           console.log('*********************');
           console.log('PASSWORD RESET URL (for testing):');
@@ -195,7 +210,7 @@ router.post('/api/forgot-password', async (req, res) => {
       });
     });
   } catch (error) {
-    console.error('Forgot password error:', error);
+    console.error('❌ Forgot password error:', error);
     res.status(500).json({ message: 'Internal server error' });
   }
 });
