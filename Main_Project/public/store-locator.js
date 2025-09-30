@@ -364,11 +364,12 @@ function findNearbyStores() {
     searchPromise(colesRequest),
     searchPromise(woolworthsRequest)
   ]).then(([colesResults, woolworthsResults]) => {
-    // Process Coles results
+    // Process Coles results - include all Coles stores
     const colesStores = colesResults
       .filter((place) => {
         const name = place.name.toLowerCase();
-        return name.includes('coles') && !name.includes('express');
+        // Include all Coles stores (even Express, Local, etc.)
+        return name.includes('coles');
       })
       .map((place, index) => ({
         ...place,
@@ -382,13 +383,13 @@ function findNearbyStores() {
         )
       }));
 
-    // Process Woolworths results - keep original order from Places API
+    // Process Woolworths results - include Metro but exclude petrol stations
     const woolworthsStores = woolworthsResults
       .filter((place) => {
         const name = place.name.toLowerCase();
+        // Include Woolworths and Metro, but exclude petrol/fuel stations
         return name.includes('woolworths')
           && !name.includes('petrol')
-          && !name.includes('metro')
           && !name.includes('fuel');
       })
       .map((place, index) => ({
