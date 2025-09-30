@@ -18,7 +18,8 @@ const adminRouter = require('./routes/admin');
 
 const app = express();
 
-
+// Trust Railway proxy for secure cookies
+app.set('trust proxy', 1);
 
 // Middleware
 app.use(logger('dev'));
@@ -36,13 +37,15 @@ app.use(session({
   secret: process.env.SESSION_SECRET || '0dlEhXMPnomlX80dyRB3QTBbV8AiBwC5Xj8gCL+UsiE=',
   resave: false,
   saveUninitialized: false,
-  name: 'sessionId', // Custom cookie name
+  name: 'sessionId',
+  proxy: true, // Trust Railway proxy
   cookie: {
-    secure: process.env.NODE_ENV === 'production',
+    secure: process.env.NODE_ENV === 'production', // HTTPS only in production
     httpOnly: true,
     maxAge: 24 * 60 * 60 * 1000, // 24 hours
-    sameSite: 'lax', // Allows cookies to be sent on same-site navigations
-    path: '/' // Ensure cookie is available across all paths
+    sameSite: 'lax',
+    path: '/',
+    domain: process.env.RAILWAY_ENVIRONMENT ? undefined : undefined // Let Railway handle domain
   }
 }));
 

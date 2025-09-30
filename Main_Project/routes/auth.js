@@ -82,9 +82,17 @@ router.post('/submit-form', async (req, res) => {
         if (passwordMatch) {
           // Store user info in session
           req.session.userId = results[0].user_id;
-          return res.json({
-            message: 'Login successful',
-            userId: results[0].user_id
+          
+          // Explicitly save session before responding
+          req.session.save((saveErr) => {
+            if (saveErr) {
+              console.error('Session save error:', saveErr);
+              return res.status(500).json({ message: 'Login failed', error: 'Session error' });
+            }
+            return res.json({
+              message: 'Login successful',
+              userId: results[0].user_id
+            });
           });
         } else {
           return res.status(401).json({ message: 'Invalid credentials' });
