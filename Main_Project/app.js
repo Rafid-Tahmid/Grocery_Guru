@@ -33,7 +33,7 @@ app.use(cors({
 
 // Session configuration
 app.use(session({
-  secret: process.env.SESSION_SECRET || 'your-secret-key',
+  secret: process.env.SESSION_SECRET || '0dlEhXMPnomlX80dyRB3QTBbV8AiBwC5Xj8gCL+UsiE=',
   resave: false,
   saveUninitialized: false,
   name: 'sessionId', // Custom cookie name
