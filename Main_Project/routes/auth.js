@@ -26,18 +26,28 @@ const transporter = nodemailer.createTransport({
 router.post('/submit-form', async (req, res) => {
   const { email, username, password, confirmPassword, firstName, lastName, phoneNumber, state, postcode } = req.body;
 
+  console.log('🔐 Submit form request:', {
+    isSignup: !!username,
+    email: email ? 'provided' : 'missing',
+    hasPassword: !!password,
+    sessionID: req.sessionID
+  });
+
   // Validate password confirmation on signup
   if (username && password !== confirmPassword) {
+    console.log('❌ Password mismatch on signup');
     return res.status(400).json({ message: 'Passwords do not match' });
   }
 
   // Validate password length for signup
   if (username && password.length < 4) {
+    console.log('❌ Password too short on signup');
     return res.status(400).json({ message: 'Password must be at least 4 characters long' });
   }
 
   // ————— SIGNUP —————
   if (username) {
+    console.log('📝 Processing signup for:', username);
     try {
       // Hash the password before storing
       const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
@@ -47,11 +57,12 @@ router.post('/submit-form', async (req, res) => {
       `;
       db.query(sql, [firstName, lastName, username, hashedPassword, email, phoneNumber, state, postcode], (err, result) => {
         if (err) {
-          console.error('Signup error:', err);
+          console.error('❌ Signup database error:', err.message);
           return res
             .status(500)
             .json({ message: 'Signup failed', error: err.message });
         }
+        console.log('✅ Signup successful for user:', username, '(ID:', result.insertId, ')');
         return res.json({
           message: 'Signup successful',
           userId: result.insertId
@@ -65,6 +76,7 @@ router.post('/submit-form', async (req, res) => {
     }
   } else {
     // ————— LOGIN —————
+    console.log('🔑 Processing login for email:', email);
     const sql = `
       SELECT user_id, password AS hashedPassword
       FROM users
@@ -72,37 +84,42 @@ router.post('/submit-form', async (req, res) => {
     `;
     db.query(sql, [email], async (err, results) => {
       if (err) {
-        console.error('Login error:', err);
+        console.error('❌ Login database error:', err.message);
         return res
           .status(500)
           .json({ message: 'Login failed', error: err.message });
       }
       if (results.length === 0) {
+        console.log('❌ No user found with email:', email);
         return res.status(401).json({ message: 'Invalid credentials' });
       }
+      console.log('👤 User found, verifying password...');
       try {
         const storedHash = results[0].hashedPassword;
         const passwordMatch = await bcrypt.compare(password, storedHash);
         if (passwordMatch) {
+          console.log('✅ Password verified, creating session...');
           // Store user info in session
           req.session.userId = results[0].user_id;
           
           // Explicitly save session before responding
           req.session.save((saveErr) => {
             if (saveErr) {
-              console.error('Session save error:', saveErr);
+              console.error('❌ Session save error:', saveErr);
               return res.status(500).json({ message: 'Login failed', error: 'Session error' });
             }
+            console.log('✅ Login successful! Session ID:', req.sessionID, 'User ID:', results[0].user_id);
             return res.json({
               message: 'Login successful',
               userId: results[0].user_id
             });
           });
         } else {
+          console.log('❌ Password verification failed for:', email);
           return res.status(401).json({ message: 'Invalid credentials' });
         }
       } catch (err) {
-        console.error('Error comparing passwords:', err);
+        console.error('❌ Error comparing passwords:', err);
         return res
           .status(500)
           .json({ message: 'Login failed', error: err.message });

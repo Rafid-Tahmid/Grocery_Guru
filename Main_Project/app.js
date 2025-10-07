@@ -8,6 +8,7 @@ const logger = require('morgan');
 const createError = require('http-errors');
 const cors = require('cors');
 const session = require('express-session');
+const MySQLStore = require('express-mysql-session')(session);
 
 const db = require('./db');
 const authMiddleware = require('./middleware/auth');
@@ -32,26 +33,70 @@ app.use(cors({
   credentials: true
 }));
 
+// Create MySQL session store
+const sessionStoreOptions = process.env.MYSQL_URL || process.env.DATABASE_URL
+  ? process.env.MYSQL_URL || process.env.DATABASE_URL
+  : {
+      host: process.env.MYSQLHOST || process.env.DB_HOST || 'localhost',
+      port: process.env.MYSQLPORT || process.env.DB_PORT || 3306,
+      user: process.env.MYSQLUSER || process.env.DB_USER || 'appuser',
+      password: process.env.MYSQLPASSWORD || process.env.DB_PASSWORD || 'securepassword',
+      database: process.env.MYSQLDATABASE || process.env.DB_NAME || 'wdc'
+    };
+
+const sessionStore = new MySQLStore({
+  expiration: 24 * 60 * 60 * 1000, // 24 hours
+  createDatabaseTable: true, // Auto-create sessions table
+  schema: {
+    tableName: 'sessions',
+    columnNames: {
+      session_id: 'session_id',
+      expires: 'expires',
+      data: 'data'
+    }
+  }
+}, typeof sessionStoreOptions === 'string' ? require('mysql2/promise').createPool(sessionStoreOptions) : require('mysql2/promise').createPool(sessionStoreOptions));
+
 // Session configuration
 app.use(session({
   secret: process.env.SESSION_SECRET || '0dlEhXMPnomlX80dyRB3QTBbV8AiBwC5Xj8gCL+UsiE=',
+  store: sessionStore,
   resave: false,
   saveUninitialized: false,
   name: 'sessionId',
   proxy: true, // Trust Railway proxy
   cookie: {
-    secure: process.env.NODE_ENV === 'production', // HTTPS only in production
+    secure: process.env.NODE_ENV === 'production' || process.env.RAILWAY_ENVIRONMENT !== undefined, // HTTPS in production or Railway
     httpOnly: true,
     maxAge: 24 * 60 * 60 * 1000, // 24 hours
     sameSite: 'lax',
-    path: '/',
-    domain: process.env.RAILWAY_ENVIRONMENT ? undefined : undefined // Let Railway handle domain
+    path: '/'
   }
 }));
 
 // Health check endpoint for deployment platforms
 app.get('/health', (req, res) => {
   res.status(200).json({ status: 'ok', timestamp: new Date().toISOString() });
+});
+
+// Session debug endpoint (for troubleshooting)
+app.get('/api/session-check', (req, res) => {
+  res.json({
+    hasSession: !!req.session,
+    sessionID: req.sessionID || 'No session ID',
+    userId: req.session?.userId || 'Not logged in',
+    cookie: req.session?.cookie || 'No cookie',
+    cookieSettings: {
+      secure: req.session?.cookie?.secure,
+      httpOnly: req.session?.cookie?.httpOnly,
+      sameSite: req.session?.cookie?.sameSite
+    },
+    environment: {
+      NODE_ENV: process.env.NODE_ENV || 'not set',
+      RAILWAY_ENVIRONMENT: process.env.RAILWAY_ENVIRONMENT || 'not set',
+      isProduction: process.env.NODE_ENV === 'production' || process.env.RAILWAY_ENVIRONMENT !== undefined
+    }
+  });
 });
 
 // CSV Import endpoint 
